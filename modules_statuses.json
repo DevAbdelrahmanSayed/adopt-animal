@@ -1,0 +1,8 @@
+{
+    "User": true,
+    "Post": true,
+    "Category": true,
+    "Comments": true,
+    "Comment": true,
+    "Like": true
+}

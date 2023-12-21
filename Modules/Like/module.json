@@ -1,0 +1,11 @@
+{
+    "name": "Like",
+    "alias": "like",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Like\\app\\Providers\\LikeServiceProvider"
+    ],
+    "files": []
+}
