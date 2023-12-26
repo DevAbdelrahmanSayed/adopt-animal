@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('pet_color');
             $table->string('pet_age');
             $table->string('pet_breed');
-            $table->string('contact_number');
             $table->timestamps();
         });
     }

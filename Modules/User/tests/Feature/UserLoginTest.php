@@ -2,7 +2,7 @@
 
 namespace Modules\User\tests\Feature;
 
-use Modules\User\app\Models\user;
+use Modules\User\app\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,7 +21,7 @@ class UserLoginTest extends TestCase
 
         $loginData = [
             'username_email' => $user->email,
-            'password' => 'password', // Use plain text password
+            'password' => 'password',
         ];
 
         // Attempt to login with valid credentials

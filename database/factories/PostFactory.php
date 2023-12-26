@@ -25,7 +25,7 @@ class PostFactory extends Factory
             'pet_color' => $this->faker->colorName,
             'pet_age' => $this->faker->randomNumber(2),
             'pet_breed' => $this->faker->word,
-            'contact_number' => $this->faker->phoneNumber,
+
         ];
     }
 }

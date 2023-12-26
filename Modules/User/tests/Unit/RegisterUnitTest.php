@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class registerUnitTest extends TestCase
+class RegisterUnitTest extends TestCase
 {
     /**
      * A basic unit test example.

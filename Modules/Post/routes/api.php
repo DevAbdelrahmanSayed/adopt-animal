@@ -16,5 +16,4 @@ use Modules\Post\app\Http\Controllers\PostsController;
 
 
 
-
 Route::apiResource('posts', PostsController::class)->middleware('auth');

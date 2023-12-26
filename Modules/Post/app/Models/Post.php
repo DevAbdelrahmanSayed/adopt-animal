@@ -22,7 +22,6 @@ class Post extends Model
         'pet_color',
         'pet_age',
         'pet_breed',
-        'contact_number'
     ];
 
     protected static function newFactory(): PostFactory

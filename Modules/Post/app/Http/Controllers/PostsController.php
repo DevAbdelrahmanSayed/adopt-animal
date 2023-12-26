@@ -13,21 +13,13 @@ use Modules\Post\app\Resources\PostsResource;
 
 class PostsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(): JsonResponse
     {
-        $posts = Post::all();
+        $posts = Post::latest()->get();
         $postsResource = PostsResource::collection($posts);
 
         return ApiResponse::sendResponse(200, 'Posts retrieved successfully', $postsResource);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-
 
     public function store(PostsRequest $request): JsonResponse
     {
@@ -55,9 +47,7 @@ class PostsController extends Controller
         return ApiResponse::sendResponse(201, 'Post created successfully', $postResource);
     }
 
-    /**
-     * Show the specified resource.
-     */
+
     public function show($id): JsonResponse
     {
         $post = Post::findOrFail($id);
@@ -66,9 +56,7 @@ class PostsController extends Controller
         return ApiResponse::sendResponse(200, 'Post retrieved successfully', $postResource);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(PostsRequest $request, $id): JsonResponse
     {
         $post = Post::findOrFail($id);
@@ -94,9 +82,6 @@ class PostsController extends Controller
         return ApiResponse::sendResponse(200, 'Post updated successfully', $postResource);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id): JsonResponse
     {
         $post = Post::findOrFail($id);
