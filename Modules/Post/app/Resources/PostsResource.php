@@ -2,6 +2,7 @@
 
 namespace Modules\Post\app\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostsResource extends JsonResource
@@ -13,19 +14,17 @@ class PostsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
             'category' => $this->category_id,
-            'photo' => url($this->photo),
+            'pet_photo' => url($this->pet_photo),
             'pet_type' => $this->pet_type,
             'pet_name' => $this->pet_name,
-            'pet_color' => $this->pet_color,
+            'pet_gender' => $this->pet_gender,
             'pet_age' => $this->pet_age,
             'pet_breed' => $this->pet_breed,
-            'contact_number' => $this->contact_number,
-            'country' => $this->country,
-            'address' => $this->address,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'contact_number' =>$this->user->contact_number,
+            'country' => $this->user->country,
+            'address' => $this->user->address,
+            'created_at' => Carbon::parse($this->created_at)->toTurkey(),
         ];
     }
 }

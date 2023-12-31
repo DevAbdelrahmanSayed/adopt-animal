@@ -14,11 +14,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete();
-            $table->string('photo');
+            $table->string('pet_photo');
             $table->string('pet_type');
             $table->string('pet_name');
-            $table->string('pet_color');
-            $table->string('pet_age');
+            $table->string('pet_gender');
+            $table->integer('pet_age');
+            $table->string('pet_desc');
             $table->string('pet_breed');
             $table->timestamps();
         });

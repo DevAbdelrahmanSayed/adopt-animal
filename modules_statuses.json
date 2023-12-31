@@ -4,5 +4,7 @@
     "Category": true,
     "Comments": true,
     "Comment": true,
-    "Like": true
+    "Like": true,
+    "Favorite": true,
+    "Search": true
 }

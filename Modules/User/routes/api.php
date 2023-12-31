@@ -18,5 +18,6 @@ use Modules\User\app\Http\Controllers\RegisterController;
 
 Route::middleware('guest')->group(function () {
     Route::post('register', [RegisterController::class,'storeRegister']);
-    Route::post('login', [LoginController::class,'storeLogin']);
+    Route::post('login', [LoginController::class,'storeLogin'])->name('login');
+    Route::get('login', [LoginController::class,'errors'])->name('login');
 });

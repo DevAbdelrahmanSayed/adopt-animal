@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Modules\Post\app\Models\Post;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -14,7 +15,7 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory, Notifiable;
 
 
-    protected $fillable = ['name','username','email','password','contact_number','country','address'];
+    protected $fillable = ['name_','username','email','password','contact_number','country','address'];
 
 
     protected $hidden = [
@@ -36,6 +37,17 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
+
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class,'user_id');
+    }
+    public function favorites()
+    {
+        return $this->belongsToMany(Post::class, 'favorites');
+    }
+
 
     public function getJWTCustomClaims()
     {

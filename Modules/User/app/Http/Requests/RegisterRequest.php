@@ -16,9 +16,12 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:25'],
+            'name_' => ['required', 'string', 'min:3', 'max:25'],
             'username' => ['required', 'string', 'min:3', 'max:30','unique:users'],
             'email' => ['required', 'email', 'unique:users,email'],
+            'contact_number' => 'required|string|unique:users,contact_number', // assuming 'users' is your table name
+            'country' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
             'password' => ['required', 'max:255', Password::defaults()],
         ];
     }

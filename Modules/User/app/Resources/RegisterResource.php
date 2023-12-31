@@ -13,9 +13,12 @@ class RegisterResource extends JsonResource
     {
         return [
             'user_id' =>$this->id,
-            'name'=>$this->name,
+            'name'=>$this->name_,
             'username'=>$this->username,
             'email'=>$this->email,
+            'contact_number' =>$this->contact_number,
+            'country' =>$this->country,
+            'address' =>$this->address,
             'created_at' =>$this->created_at,
             'token'=>$this->token,
 

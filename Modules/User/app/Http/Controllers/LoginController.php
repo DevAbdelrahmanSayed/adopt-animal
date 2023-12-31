@@ -26,8 +26,13 @@ class LoginController extends Controller
 
             return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'user logged in Successfully', new LoginResource($currentUser));
         } else {
-            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'user credentials do not work', []);
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'User credentials do not work', []);
+
         }
 
+    }
+    public function errors()
+    {
+        return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'erorrs');
     }
 }
