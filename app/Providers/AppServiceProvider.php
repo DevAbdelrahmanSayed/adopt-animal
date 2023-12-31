@@ -5,7 +5,7 @@ namespace App\Providers;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\TelescopeServiceProvider;
-
+use Illuminate\Support\Facades\Schema;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -27,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
         Carbon::macro('toTurkey', function (){
             return $this->format('Y-m-d H:i:s');
         });
+        Schema::defaultStringLength(191);
     }
 }
