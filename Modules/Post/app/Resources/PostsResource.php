@@ -21,6 +21,7 @@ class PostsResource extends JsonResource
             'pet_gender' => $this->pet_gender,
             'pet_age' => $this->pet_age,
             'pet_breed' => $this->pet_breed,
+            'pet_desc' => $this->pet_desc,
             'contact_number' =>$this->user->contact_number,
             'country' => $this->user->country,
             'address' => $this->user->address,
