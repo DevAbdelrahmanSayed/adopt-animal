@@ -41,6 +41,10 @@ class PostsController extends Controller
     public function show($id): JsonResponse
     {
         $post = Post::findOrFail($id);
+        if (is_null($post)){
+            return ApiResponse::sendResponse(200, 'no Post found');
+        }
+
         $postResource = new PostsResource($post);
 
         return ApiResponse::sendResponse(200, 'Post retrieved successfully', $postResource);
