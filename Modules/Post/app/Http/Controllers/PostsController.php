@@ -6,7 +6,6 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Post\app\Http\Requests\PostsRequest;
 use Modules\Post\app\Models\Post;
@@ -24,27 +23,20 @@ class PostsController extends Controller
 
     public function store(PostsRequest $request): JsonResponse
     {
-
         if ($request->hasFile('pet_photo')) {
-            $originalName = $request->file('pet_photo')->getClientOriginalName();
             $extension = $request->file('pet_photo')->getClientOriginalExtension();
-            $randomName = Str::random(10) . 'abed.' . $extension; // Generate a random name
+            $randomName = Str::random(10) . 'abed.' . $extension;
 
-            $photoPath = $request->file('pet_photo')->storeAs('public/pet_photos', $randomName);
-            $photoPath = Storage::url($photoPath);
-        } else {
-            // Set a default photo path
-            $photoPath = asset('assets/default.jpg');
+            $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
+            $photoUrl = url('pet_photos/' . $randomName);
         }
 
-        // Create the post
-        $userId = auth()->id();
-        $requestData = array_merge($request->validated(), ['user_id' => $userId, 'pet_photo' => $photoPath]);
+        $userId = Auth::id();
+        $requestData = array_merge($request->validated(), ['user_id' => $userId, 'pet_photo' => $photoUrl]);
         $post = Post::create($requestData);
 
-        return ApiResponse::sendResponse(201, 'Post created successfully',['post_id'=>$post->id]);
+        return ApiResponse::sendResponse(201, 'Post created successfully', ['post_id' => $post->id]);
     }
-
 
     public function show($id): JsonResponse
     {
@@ -53,35 +45,29 @@ class PostsController extends Controller
 
         return ApiResponse::sendResponse(200, 'Post retrieved successfully', $postResource);
     }
+
     public function showUserPosts(): JsonResponse
     {
         $user = Auth::user();
         $posts = $user->posts;
         $postResource = PostsResource::collection($posts);
-        return  ApiResponse::sendResponse(200, 'user Posts retrieved successfully', $postResource);
 
+        return ApiResponse::sendResponse(200, 'User posts retrieved successfully', $postResource);
     }
-
 
     public function update(PostsRequest $request, $id): JsonResponse
     {
         $post = Post::findOrFail($id);
+
         if ($request->hasFile('pet_photo')) {
+            $extension = $request->file('pet_photo')->getClientOriginalExtension();
+            $randomName = Str::random(20) . '.' . $extension;
 
-        $originalName = $request->file('pet_photo')->getClientOriginalName();
-        $extension = $request->file('pet_photo')->getClientOriginalExtension();
-        $randomName = Str::random(20) . '.' . $extension;
+            $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
+            $photoUrl = url('pet_photos/' . $randomName);
 
-        $photoPath = $request->file('pet_photo')->storeAs('public/pet_photos', $randomName);
-        $photoPath = Storage::url($photoPath);
-
-
-        $post->update(array_merge($request->validated(), ['pet_photo' => $photoPath]));
-    } else {
-            $photoPath = asset('assets/default.jpg');
-        // If no new photo is provided, update with existing photo
-            $post->update(array_merge($request->validated(), ['photo' => $photoPath]));
-    }
+            $post->update(array_merge($request->validated(), ['pet_photo' => $photoUrl]));
+        }
 
         $postResource = new PostsResource($post);
 
@@ -91,9 +77,15 @@ class PostsController extends Controller
     public function destroy($id): JsonResponse
     {
         $post = Post::findOrFail($id);
+
         if ($post->pet_photo) {
-            Storage::delete($post->pet_photo);
+            $filePath = parse_url($post->pet_photo, PHP_URL_PATH);
+            $fileFullPath = public_path($filePath);
+            if (file_exists($fileFullPath)) {
+                unlink($fileFullPath);
+            }
         }
+
         $post->delete();
 
         return ApiResponse::sendResponse(200, 'Post deleted successfully');

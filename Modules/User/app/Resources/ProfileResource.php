@@ -5,7 +5,7 @@ namespace Modules\User\app\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RegisterResource extends JsonResource
+class ProfileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,7 +21,7 @@ class RegisterResource extends JsonResource
             'country' =>$this->country,
             'address' =>$this->address,
             'created_at' => Carbon::parse($this->created_at)->toTurkey(),
-            'token'=>$this->token,
+
 
         ];
     }

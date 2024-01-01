@@ -15,7 +15,7 @@ class PostsResource extends JsonResource
         return [
             'id' => $this->id,
             'category' => $this->category_id,
-            'pet_photo' => url($this->pet_photo),
+            'pet_photo' => $this->pet_photo,
             'pet_type' => $this->pet_type,
             'pet_name' => $this->pet_name,
             'pet_gender' => $this->pet_gender,

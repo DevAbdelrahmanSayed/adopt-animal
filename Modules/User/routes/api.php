@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\app\Http\Controllers\LoginController;
+use Modules\User\app\Http\Controllers\ProfileController;
 use Modules\User\app\Http\Controllers\RegisterController;
 
 /*
@@ -18,6 +19,11 @@ use Modules\User\app\Http\Controllers\RegisterController;
 
 Route::middleware('guest')->group(function () {
     Route::post('register', [RegisterController::class,'storeRegister']);
-    Route::post('login', [LoginController::class,'storeLogin'])->name('login');
+    Route::post('login', [LoginController::class,'storeLogin']);
     Route::get('login', [LoginController::class,'errors'])->name('login');
+});
+Route::middleware('auth')->group(function () {
+    Route::get('/profiles', [ProfileController::class, 'index']);
+    Route::put('/profile', [ProfileController::class, 'update']);
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
 });
