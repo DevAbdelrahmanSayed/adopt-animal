@@ -26,7 +26,15 @@ class Post extends Model
         'pet_age',
         'pet_breed',
     ];
-    protected $searchable = ['pet_breed', 'pet_type','pet_name'];
+    protected $searchable = [
+        'pet_breed',
+        'pet_type',
+        'pet_name',
+        'pet_gender',
+        'pet_age',
+        'pet_desc',
+
+    ];
     public function user()
     {
         return $this->belongsTo(User::class,'user_id');
