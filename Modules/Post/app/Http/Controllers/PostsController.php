@@ -70,8 +70,10 @@ class PostsController extends Controller
             $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
             $photoUrl = url('pet_photos/' . $randomName);
 
-            $post->update(array_merge($request->validated(), ['pet_photo' => $photoUrl]));
+            $request->merge(['pet_photo' => $photoUrl]);
         }
+        $post->fill($request->validated());
+        $post->save();
 
         $postResource = new PostsResource($post);
 

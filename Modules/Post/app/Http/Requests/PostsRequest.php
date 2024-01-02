@@ -13,14 +13,14 @@ class PostsRequest extends FormRequest
     {
         return [
 
-            'category_id' => 'required|exists:categories,id',
-            'pet_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'pet_type' => 'required|string',
-            'pet_name' => 'required|string',
-            'pet_gender' => 'required|string',
-            'pet_age' => 'required|integer|digits_between:1,2',
-            'pet_breed' => 'required|string',
-            'pet_desc'  => 'required|string'
+            'category_id' => 'exists:categories,id',
+            'pet_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'pet_type' => 'string',
+            'pet_name' => 'string',
+            'pet_gender' => 'string',
+            'pet_age' => 'integer|digits_between:1,2',
+            'pet_breed' => 'string',
+            'pet_desc'  => 'string'
         ];
     }
 
