@@ -30,5 +30,5 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('password')->group(function () {
     Route::post('verification', [ProfileController::class, 'resetLinkEmail']);
-    Route::post('reset', [ProfileController::class, 'resetPassword'])->middleware('auth');
+    Route::post('reset', [ProfileController::class, 'resetPassword']);
 });
