@@ -27,3 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
 });
+
+Route::prefix('password')->group(function () {
+    Route::post('verification', [ProfileController::class, 'resetLinkEmail']);
+    Route::post('reset', [ProfileController::class, 'resetPassword'])->middleware('auth');
+});

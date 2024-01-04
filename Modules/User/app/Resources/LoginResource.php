@@ -12,7 +12,7 @@ class LoginResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' =>$this->id,
+            'user_id' =>$this->id,
             'username'=>$this->username,
             'name'=>$this->name_,
             'email'=>$this->email,

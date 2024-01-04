@@ -11,77 +11,92 @@ class LoginUnitTest extends TestCase
 {
 
     use RefreshDatabase;
-    public function test_login_with_short_password()
-    {
-        $user = UserFactory::new()->create();
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        User::create([
+            'name_' => 'abed',
+            'email' => 'validemail@example.com',
+            'username' => 'validusername',
+            'password' => 'ValidPass123!',
+            'country' => 'istanbul',
+            'address' => 'uskudar',
+            'contact_number' => '5070145054',
+        ]);
+    }
+
+    public function test_Invalid_Login_With_Incorrect_Email()
+    {
+        $response = $this->postJson('api/v1/login', [
+            'username_email' => 'wrongemail@example.com',
+            'password' => 'ValidPass123!'
+        ]);
+
+        $response->assertStatus(422);
+
+        $this->assertEquals('User credentials do not work', $response['message']);
+    }
+    public function test_Invalid_Login_With_Incorrect_Username()
+    {
+        $response = $this->postJson('api/v1/login', [
+            'username_email' => 'wrongUsername',
+            'password' => 'ValidPass123!'
+        ]);
+
+        $response->assertStatus(422);
+
+        $this->assertEquals('User credentials do not work', $response['message']);
+    }
+    public function test_Invalid_Login_With_Incorrect_Password()
+    {
+        $response = $this->postJson('api/v1/login', [
+            'username_email' => 'validemail@example.com',
+            'password' => 'WrongPass123!'
+        ]);
+
+        $response->assertStatus(422);
+
+        $this->assertEquals('User credentials do not work', $response['message']);
+    }
+    public function test_login_with_missing_login_identifier()
+    {
         $loginData = [
-            'username_email' => $user->email,
-            'password' => 'short',
+
+            'password' => 'invalid_password',
         ];
-        $response = $this->postJson('api/v1/login',$loginData);
+
+        $response = $this->postJson('api/v1/login', $loginData);
+
+        $response->assertStatus(422)
+            ->assertJson([
+                "status" => 422,
+                "message" => 'Validation Errors',
+                'data' => [
+                    'username_email' => [
+                        "The username email field is required."
+                    ],
+                ],
+            ]);
+    }
+    public function test_login_with_missing_password()
+    {
+        $loginData = [
+            'username_email' => 'test@example.com',
+        ];
+        // Attempt to login with valid credentials
+        $response = $this->postJson('api/v1/login', $loginData);
+
         $response->assertStatus(422)
             ->assertJson([
                 "status" => 422,
                 "message" => 'Validation Errors',
                 'data' => [
                     'password' => [
-                        "The password field must be at least 8 characters."
+                        "The password field is required."
                     ],
                 ],
             ]);
-    }
-
-    public function test_login_with_username()
-    {
-        // Create a test user
-        $user = User::create([
-            'name_' => 'Test User',
-            'username' => 'testuser',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'), // Hash the password
-            'country' => 'Test Country',
-            'address' => 'Test Address',
-            'contact_number' => '1234567890',
-        ]);
-
-        // Data for login
-        $loginData = [
-            'username_email' => $user->username,
-            'password' => 'password123', // Use the same password used for creating the user
-        ];
-
-        // Attempt to log in
-        $response = $this->postJson('api/v1/login', $loginData);
-
-        // Optional: Dump the response for debugging
-        $response->dump();
-<?php
-
-namespace Database\Factories;
-
-use Illuminate\Database\Eloquent\Factories\Factory;
-
-
-class UserFactory extends Factory
-{
-    protected $model = \Modules\User\app\Models\User::class;
-    public function definition(): array
-    {
-        return [
-            'name_' => $this->faker->name,
-            'username' => $this->faker->unique()->userName,
-            'email' => $this->faker->unique()->safeEmail,
-            'password' => bcrypt('password'),
-            'country' => $this->faker->country,
-            'address' => $this->faker->address,
-            'contact_number' => $this->faker->phoneNumber,
-
-        ];
-    }
-}
-
-        // Assert the login was successful
-        $response->assertStatus(200);
     }
 }

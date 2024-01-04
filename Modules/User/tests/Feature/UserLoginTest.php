@@ -9,22 +9,51 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class UserLoginTest extends TestCase
 {
     use RefreshDatabase;
-
-    public function test_can_be_login_with_email(): void
+    protected function setUp(): void
     {
-        $user = User::create([
-            'name'=>'tester',
-            'username' => 'testuser',
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
+        parent::setUp();
 
+        User::create([
+            'name_' => 'abed',
+            'email' => 'validemail@example.com',
+            'username' => 'validusername',
+            'password' => 'ValidPass123!',
+            'country' => 'istanbul',
+            'address' => 'uskudar',
+            'contact_number' => '5070145054',
+        ]);
+    }
+    public function test_can_be_login(): void
+    {
         $loginData = [
-            'username_email' => $user->email,
-            'password' => 'password',
+            'username_email' => 'validusername',
+            'password' => 'ValidPass123!', // Use plain text password
         ];
 
         // Attempt to login with valid credentials
+        $response = $this->postJson('api/v1/login', $loginData);
+
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                "status",
+                "message",
+                'data' => [
+                    'user_id',
+                    'username',
+                    'email',
+                    'token',
+                ],
+            ]);
+    }
+
+    public function test_can_be_login_with_email(): void
+    {
+
+        $loginData = [
+            'username_email' => 'validemail@example.com',
+            'password' => 'ValidPass123!',
+        ];
         $response = $this->postJson('api/v1/login', $loginData);
 
         $response->assertStatus(200)
@@ -32,7 +61,8 @@ class UserLoginTest extends TestCase
                 "status",
                 "message",
                 'data' => [
-                    'id',
+                    'user_id',
+                    'name',
                     'username',
                     'email',
                     'token',
@@ -41,51 +71,25 @@ class UserLoginTest extends TestCase
     }
     public function test_can_be_login_with_username(): void
     {
-        $user = User::create([
-            'name_' => 'Test User',
-            'username' => 'testuser',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password123'), // Hash the password
-            'country' => 'Test Country',
-            'address' => 'Test Address',
-            'contact_number' => '1234567890',
-        ]);
-
         $loginData = [
-            'username_email' => $user->username,
-            'password' => 'password', // Use plain text password
+            'username_email' => 'validusername',
+            'password' => 'ValidPass123!', // Use plain text password
         ];
 
         // Attempt to login with valid credentials
         $response = $this->postJson('api/v1/login', $loginData);
+
 
         $response->assertStatus(200)
             ->assertJsonStructure([
                 "status",
                 "message",
                 'data' => [
-                    'id',
+                    'user_id',
                     'username',
                     'email',
                     'token',
                 ],
-            ]);
-    }//Lkjhgfdsa276!
-    public function test_login_with_invalid_credentials() :void
-    {
-        $loginData = [
-            'username_email' => 'nonexistent@example.com',
-            'password' => 'invalid_password',
-        ];
-
-        // Attempt to login with valid credentials
-        $response = $this->postJson('api/v1/login', $loginData);
-
-        $response->assertStatus(200)
-            ->assertJson([
-                "status"=>200,
-                "message"=>'user credentials do not work',
-                'data' => [],
             ]);
     }
     public function test_login_with_missing_login_identifier()

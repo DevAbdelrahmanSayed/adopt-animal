@@ -8,12 +8,14 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Modules\Post\app\Resources\PostsResource;
+use Illuminate\Validation\Rules\Password;
 use Modules\User\app\Http\Requests\ProfileRequest;
 use Modules\User\app\Http\Requests\UpdatePasswordRequest;
 use Modules\User\app\Models\User;
 use Modules\User\app\Resources\ProfileResource;
 use Modules\User\app\Resources\RegisterResource;
+use Illuminate\Support\Facades\Validator;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class ProfileController extends Controller
 {
@@ -24,15 +26,13 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        // Get the authenticated user's profile
+
         $profile = auth()->user();
 
-        // Check if the user profile is null
         if (is_null($profile)) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'No user data found.');
         }
 
-        // Return the user data
         return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User data retrieved successfully', new ProfileResource($profile));
     }
 
@@ -51,12 +51,7 @@ class ProfileController extends Controller
 
         return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User profile updated successfully', new RegisterResource($user));
     }
-    /**
-     * Update the password for the authenticated user.
-     *
-     * @param UpdatePasswordRequest $request
-     * @return JsonResponse
-     */
+
     public function updatePassword(UpdatePasswordRequest $request)
     {
         $user = Auth::user();
@@ -66,10 +61,52 @@ class ProfileController extends Controller
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Current password does not match.');
         }
 
-        $user->password =$data['new_password'];
+        $user->password = $data['new_password'];
         $user->save();
 
         return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Password updated successfully');
+    }
+    public function resetLinkEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username_email' =>  ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
+        ]);
+
+        if ($validator->fails()) {
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
+        }
+        $loginIdentifier = $request->input('username_email');
+        $type = filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+
+
+        $user = User::where($type, $loginIdentifier)->first();
+
+        if ($user) {
+
+            $verificationToken = JWTAuth::fromUser($user);
+
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'email is correct .', ['token' => $verificationToken]);
+        }
+
+        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'Email not found', []);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
+        ]);
+        if ($validator->fails()) {
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
+        }
+        $currentUser = Auth::user();
+        if ($currentUser) {
+            $currentUser->update(['password' => $request->password]);
+
+            return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'Password updated Successfully', []);
+        }
+
+        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'User not found', []);
     }
 
 

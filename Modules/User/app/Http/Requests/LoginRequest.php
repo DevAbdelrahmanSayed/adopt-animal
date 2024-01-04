@@ -16,8 +16,8 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
        return [
-           'username_email' => ['required', 'string'],
-           'password' => ['required', 'max:255', Password::defaults()],
+           'username_email' => ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
+           'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
        ];
     }
     protected function failedValidation(Validator $validator)
