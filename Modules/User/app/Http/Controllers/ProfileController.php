@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Modules\User\app\Http\Requests\ProfileRequest;
+use Modules\User\app\Http\Requests\ResetPasswordRequest;
 use Modules\User\app\Http\Requests\UpdatePasswordRequest;
 use Modules\User\app\Models\User;
 use Modules\User\app\Resources\ProfileResource;
@@ -91,15 +92,9 @@ class ProfileController extends Controller
 //        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'Email not found', []);
 //    }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'username_email' =>  ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
-            'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
-        ]);
-        if ($validator->fails()) {
-            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
-        }
+
         $loginIdentifier = $request->input('username_email');
         $type = filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
