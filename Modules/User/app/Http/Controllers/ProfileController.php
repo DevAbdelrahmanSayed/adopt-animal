@@ -66,40 +66,44 @@ class ProfileController extends Controller
 
         return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Password updated successfully');
     }
-    public function resetLinkEmail(Request $request)
+//    public function resetLinkEmail(Request $request)
+//    {
+//        $validator = Validator::make($request->all(), [
+//            'username_email' =>  ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
+//        }
+//        $loginIdentifier = $request->input('username_email');
+//        $type = filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+//
+//
+//        $user = User::where($type, $loginIdentifier)->first();
+//
+//        if ($user) {
+//
+//            $verificationToken = JWTAuth::fromUser($user);
+//
+//            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'email is correct .', ['token' => $verificationToken]);
+//        }
+//
+//        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'Email not found', []);
+//    }
+
+    public function resetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'username_email' =>  ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
+            'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
         ]);
-
         if ($validator->fails()) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
         }
         $loginIdentifier = $request->input('username_email');
         $type = filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
-
-        $user = User::where($type, $loginIdentifier)->first();
-
-        if ($user) {
-
-            $verificationToken = JWTAuth::fromUser($user);
-
-            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'email is correct .', ['token' => $verificationToken]);
-        }
-
-        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'Email not found', []);
-    }
-
-    public function resetPassword(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
-        ]);
-        if ($validator->fails()) {
-            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
-        }
-        $currentUser = Auth::user();
+        $currentUser = User::where($type, $loginIdentifier)->first();
         if ($currentUser) {
             $currentUser->update(['password' => $request->password]);
 
@@ -108,6 +112,7 @@ class ProfileController extends Controller
 
         return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'User not found', []);
     }
+
 
 
 }
