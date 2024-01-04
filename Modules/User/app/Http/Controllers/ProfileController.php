@@ -94,7 +94,6 @@ class ProfileController extends Controller
 
     public function resetPassword(ResetPasswordRequest $request)
     {
-
         $loginIdentifier = $request->input('username_email');
         $type = filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
 
@@ -105,7 +104,7 @@ class ProfileController extends Controller
             return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'Password updated Successfully', []);
         }
 
-        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'User not found', []);
+        return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'Username or email is invalid', []);
     }
 
 
