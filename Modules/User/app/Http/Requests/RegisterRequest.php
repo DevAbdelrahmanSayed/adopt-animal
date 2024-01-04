@@ -16,15 +16,16 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_' => ['required', 'string', 'min:3', 'max:25'],
-            'username' => ['required', 'string', 'min:3', 'max:30','unique:users'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'contact_number' => 'required|string|unique:users,contact_number', // assuming 'users' is your table name
-            'country' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'password' => ['required', 'max:255', Password::defaults()],
+            'name_' => ['required', 'string', 'min:3', 'max:25', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>]*$/'],
+            'username' => ['required', 'string', 'min:3', 'max:30', 'unique:users', 'regex:/^[A-Za-z0-9]+$/', 'regex:/^[^<>]*$/'],
+            'email' => ['required', 'email', 'unique:users,email', 'regex:/^[^<>]*$/'],
+            'contact_number' => ['required', 'unique:users,contact_number', 'regex:/^[^<>]*$/'],
+            'country' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>]*$/'],
+            'address' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>]*$/'],
+            'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
         ];
     }
+
     protected function failedValidation(Validator $validator)
     {
         if (request()->is('api/*')) {
@@ -33,9 +34,6 @@ class RegisterRequest extends FormRequest
         }
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;

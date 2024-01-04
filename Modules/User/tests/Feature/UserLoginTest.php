@@ -42,10 +42,13 @@ class UserLoginTest extends TestCase
     public function test_can_be_login_with_username(): void
     {
         $user = User::create([
-            'name'=>'tester',
+            'name_' => 'Test User',
             'username' => 'testuser',
             'email' => 'test@example.com',
-            'password' => 'password',
+            'password' => bcrypt('password123'), // Hash the password
+            'country' => 'Test Country',
+            'address' => 'Test Address',
+            'contact_number' => '1234567890',
         ]);
 
         $loginData = [

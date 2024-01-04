@@ -10,6 +10,8 @@ class PostsResource extends JsonResource
     /**
      * Transform the resource into an array.
      */
+
+
     public function toArray($request): array
     {
         return [
@@ -17,6 +19,7 @@ class PostsResource extends JsonResource
             'category' => $this->category_id,
             'owner_name' => $this->user->name_,
             'pet_photo' => $this->pet_photo,
+            'pet_favorite' =>$this->isFavoritedByUser(auth()->id()),
             'pet_type' => $this->pet_type,
             'pet_name' => $this->pet_name,
             'pet_gender' => $this->pet_gender,

@@ -16,5 +16,5 @@ use Modules\Post\app\Http\Controllers\PostsController;
 
 
 
-Route::apiResource('posts', PostsController::class);
+Route::apiResource('posts', PostsController::class)->middleware('auth');
 Route::get('user/posts', [PostsController::class,'showUserPosts'])->middleware('auth');

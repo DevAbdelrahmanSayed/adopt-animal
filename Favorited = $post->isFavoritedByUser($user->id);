@@ -1,0 +1,18 @@
+[90m= [39m[34;4mModules\User\app\Models\User[39;24m {#6983
+    [34mid[39m: [35m1[39m,
+    [34mname_[39m: "[32mDomenick Jerde[39m",
+    [34musername[39m: "[32mcarley85[39m",
+    [34memail[39m: "[32mmills.clarissa@example.org[39m",
+    #[33mpassword[39m: "[32m$2y$12$QbXw9moW2bNtvGlsLVpQRuJOoOQAI/ZKHmSvsAkg55/sk9eyjC8CO[39m",
+    [34mcontact_number[39m: "[32m1-605-534-9783[39m",
+    [34mcountry[39m: "[32mJordan[39m",
+    [34maddress[39m: """
+      [32m6258 Asa Village Apt. 696[39m\n
+      [32mNorth Wernerborough, WY 09652[39m
+      """,
+    [34memail_verified_at[39m: [36mnull[39m,
+    #[33mremember_token[39m: [36mnull[39m,
+    [34mcreated_at[39m: "[32m2024-01-04 13:18:05[39m",
+    [34mupdated_at[39m: "[32m2024-01-04 13:18:05[39m",
+  }
+
