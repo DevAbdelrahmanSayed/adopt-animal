@@ -104,7 +104,7 @@ class ProfileController extends Controller
             return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'Password updated Successfully', []);
         }
 
-        return ApiResponse::sendResponse(JsonResponse::HTTP_OK,'Username or email is invalid', []);
+        return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY,'Username or email is invalid', []);
     }
 
 
