@@ -16,12 +16,12 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_' => ['required', 'string', 'min:3', 'max:25', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>]*$/'],
-            'username' => ['required', 'string', 'min:3', 'max:30', 'unique:users', 'regex:/^[A-Za-z0-9]+$/', 'regex:/^[^<>]*$/'],
-            'email' => ['required', 'email', 'unique:users,email', 'regex:/^[^<>]*$/'],
-            'contact_number' => ['required', 'unique:users,contact_number', 'regex:/^[^<>]*$/'],
-            'country' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>]*$/'],
-            'address' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>]*$/'],
+            'name_' => ['required', 'string', 'min:3', 'max:25', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]*$/'],
+            'username' => ['required', 'string', 'min:3', 'max:30', 'unique:users', 'regex:/^[A-Za-z0-9]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]*$/'],
+            'email' => ['required', 'email', 'unique:users,email', 'regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
+            'contact_number' => ['required', 'unique:users,contact_number', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]*$/'],
+            'country' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]*$/'],
+            'address' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]*$/'],
             'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
         ];
     }

@@ -23,6 +23,10 @@ class FavoriteController extends Controller
     public function addFavorite(Post $post)
     {
         $user = Auth::user();
+        if ($user->favorites()->where('post_id', $post->id)->exists()) {
+
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Error: Post already favorited');
+        }
         $user->favorites()->syncWithoutDetaching([$post->id]);
         return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'Favorite added successfully', ['post_id' => $post->id]);
     }
