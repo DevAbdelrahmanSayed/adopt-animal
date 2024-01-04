@@ -10,14 +10,12 @@ use Illuminate\Validation\Rules\Password;
 
 class LoginRequest extends FormRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     */
+
     public function rules(): array
     {
        return [
            'username_email' => ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
-           'password' => ['required', 'regex:/^[^<>]*$/', Password::min(8), Password::defaults()],
+           'password' => ['required', 'regex:/^[^<>]*$/', Password::defaults()],
        ];
     }
     protected function failedValidation(Validator $validator)
