@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Modules\Post\app\Http\Requests\PostsRequest;
+use Modules\Post\app\Http\Requests\UpdatePostRequest;
 use Modules\Post\app\Models\Post;
 use Modules\Post\app\Resources\PostsResource;
 
@@ -59,7 +60,7 @@ class PostsController extends Controller
         return ApiResponse::sendResponse(200, 'User posts retrieved successfully', $postResource);
     }
 
-    public function update(PostsRequest $request, $id): JsonResponse
+    public function update(UpdatePostRequest $request, $id): JsonResponse
     {
         $post = Post::findOrFail($id);
 
