@@ -2,7 +2,10 @@
 
 namespace Modules\Post\app\Http\Requests;
 
+use App\Helpers\ApiResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PostsRequest extends FormRequest
 {
@@ -22,6 +25,13 @@ class PostsRequest extends FormRequest
             'pet_breed' => 'required,string',
             'pet_desc'  => 'required,string'
         ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        if (request()->is('api/*')) {
+            $response = ApiResponse::sendResponse(422, 'Validation Errors', $validator->errors());
+            throw new HttpResponseException($response);
+        }
     }
 
 
