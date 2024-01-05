@@ -15,17 +15,17 @@ class PostsRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'category_id' => 'required,exists:categories,id',
-            'pet_photo' => 'required,image|mimes:jpeg,png,jpg,gif|max:2048',
-            'pet_type' => 'required,string',
-            'pet_name' => 'required,string',
-            'pet_gender' => 'required,string',
-            'pet_age' => 'required,integer|digits_between:1,2',
-            'pet_breed' => 'required,string',
-            'pet_desc'  => 'required,string'
+            'category_id' => 'required|exists:categories,id', // Corrected: use pipe instead of comma
+            'pet_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'pet_type' => 'required|string',
+            'pet_name' => 'required|string',
+            'pet_gender' => 'required|string',
+            'pet_age' => 'required|integer|digits_between:1,2',
+            'pet_breed' => 'required|string',
+            'pet_desc'  => 'required|string'
         ];
     }
+
     protected function failedValidation(Validator $validator)
     {
         if (request()->is('api/*')) {
