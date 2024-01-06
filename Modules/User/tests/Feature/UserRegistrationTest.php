@@ -15,7 +15,7 @@ class UserRegistrationTest extends TestCase
         $userData = [
             'name_'=>'tester',
             'username' => 'testuser',
-            'email' => 'test@example.com',
+            'email' => 'test@gmail.com',
             'password' => 'Lkjhgfdsad12#',
             'country' => 'istanbul',
             'address' => 'uskudar',
@@ -38,10 +38,12 @@ class UserRegistrationTest extends TestCase
                     'created_at',
                 ],
             ]);
+
+
         $this->assertArrayHasKey('token',$response['data']);
         $this->assertDatabaseHas('users', [
             'username' => 'testuser',
-            'email' => 'test@example.com',
+            'email' => 'test@gmail.com',
         ]);
     }
 

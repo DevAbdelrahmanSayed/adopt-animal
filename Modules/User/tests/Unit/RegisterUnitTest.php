@@ -36,7 +36,7 @@ class RegisterUnitTest extends TestCase
         $userData = [
             'name_'=>'tester',
             'username' => 'testuser',
-            'email' => 'test@example.com',
+            'email' => 'test@gmail.com',
             'password' => 'Lkjhgfdsad12#',
             'country' => 'istanbul',
             'address' => 'uskudar',
@@ -65,7 +65,7 @@ class RegisterUnitTest extends TestCase
         $userData = [
             'name_'=>'tester<',
             'username' => 'tester</',
-            'email' => 'test/@example.com',
+            'email' => 'test/@gmail.com',
             'password' => 'Lkjhgfds2#<scr/',
             'country' => 'istanbul/?',
             'address' => 'uskudar/?>',

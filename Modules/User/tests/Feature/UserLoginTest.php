@@ -69,6 +69,7 @@ class UserLoginTest extends TestCase
                 ],
             ]);
     }
+
     public function test_can_be_login_with_username(): void
     {
         $loginData = [
@@ -78,7 +79,6 @@ class UserLoginTest extends TestCase
 
         // Attempt to login with valid credentials
         $response = $this->postJson('api/v1/login', $loginData);
-
 
         $response->assertStatus(200)
             ->assertJsonStructure([

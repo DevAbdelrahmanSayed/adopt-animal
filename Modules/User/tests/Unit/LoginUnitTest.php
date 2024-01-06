@@ -18,7 +18,7 @@ class LoginUnitTest extends TestCase
 
         User::create([
             'name_' => 'abed',
-            'email' => 'validemail@example.com',
+            'email' => 'validemail@gmail.com',
             'username' => 'validusername',
             'password' => 'ValidPass123!',
             'country' => 'istanbul',
@@ -30,13 +30,13 @@ class LoginUnitTest extends TestCase
     public function test_Invalid_Login_With_Incorrect_Email()
     {
         $response = $this->postJson('api/v1/login', [
-            'username_email' => 'wrongemail@example.com',
+            'username_email' => 'wrongemail@gmail.com',
             'password' => 'ValidPass123!'
         ]);
 
         $response->assertStatus(422);
 
-        $this->assertEquals('User credentials do not work', $response['message']);
+        $this->assertEquals('The email or password you entered is incorrect.', $response['message']);
     }
     public function test_Invalid_Login_With_Incorrect_Username()
     {
@@ -47,18 +47,18 @@ class LoginUnitTest extends TestCase
 
         $response->assertStatus(422);
 
-        $this->assertEquals('User credentials do not work', $response['message']);
+        $this->assertEquals('The email or password you entered is incorrect.', $response['message']);
     }
     public function test_Invalid_Login_With_Incorrect_Password()
     {
         $response = $this->postJson('api/v1/login', [
-            'username_email' => 'validemail@example.com',
+            'username_email' => 'validemail@gmail.com',
             'password' => 'WrongPass123!'
         ]);
 
         $response->assertStatus(422);
 
-        $this->assertEquals('User credentials do not work', $response['message']);
+        $this->assertEquals('The email or password you entered is incorrect.', $response['message']);
     }
     public function test_login_with_missing_login_identifier()
     {
@@ -83,7 +83,7 @@ class LoginUnitTest extends TestCase
     public function test_login_with_missing_password()
     {
         $loginData = [
-            'username_email' => 'test@example.com',
+            'username_email' => 'test@gmail.com',
         ];
         // Attempt to login with valid credentials
         $response = $this->postJson('api/v1/login', $loginData);

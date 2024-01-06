@@ -31,7 +31,7 @@ class ProfileController extends Controller
         $profile = auth()->user();
 
         if (is_null($profile)) {
-            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'No user data found.');
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'No user data found.');
         }
 
         return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User data retrieved successfully', new ProfileResource($profile));

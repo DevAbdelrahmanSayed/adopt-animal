@@ -30,13 +30,20 @@ class CategoryController extends Controller
 
 
 
-    public function show(Category $category)
+    public function show($categoryId)
     {
-        $posts = $category->posts;
+        $category = Category::with('posts.user')->find($categoryId);
 
-        if ($posts->isEmpty()) {
+        if (is_null($category)) {
+            return ApiResponse::sendResponse(404, 'Category not found');
+        }
+
+        if ($category->posts->isEmpty()) {
             return ApiResponse::sendResponse(200, 'No posts exist for this category');
         }
+
+        $posts = $category->posts;
+
 
         $postResource = PostsResource::collection($posts);
 

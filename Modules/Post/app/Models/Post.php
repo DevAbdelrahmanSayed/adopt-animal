@@ -47,8 +47,9 @@ class Post extends Model
     {
         return $this->belongsToMany(User::class, 'favorites','post_id', 'user_id');
     }
-    public function isFavoritedByUser($userId)
+    public function isFavoritedByUser()
     {
+        $userId = auth()->id();
         return $this->favoritedBy()->where('user_id', $userId)->exists();
     }
 
