@@ -6,6 +6,8 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Post\app\Http\Requests\PostsRequest;
 use Modules\Post\app\Http\Requests\UpdatePostRequest;
@@ -59,27 +61,37 @@ class PostsController extends Controller
 
         return ApiResponse::sendResponse(200, 'User posts retrieved successfully', $postResource);
     }
-
     public function update(UpdatePostRequest $request, $id): JsonResponse
     {
         $post = Post::findOrFail($id);
-
         if ($request->hasFile('pet_photo')) {
+
             $extension = $request->file('pet_photo')->getClientOriginalExtension();
-            $randomName = Str::random(20) . '.' . $extension;
+            $randomName = Str::random(10) . 'abed.' . $extension;
 
             $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
             $photoUrl = url('pet_photos/' . $randomName);
 
-            $request->merge(['pet_photo' => $photoUrl]);
+            $post->pet_photo = $photoUrl;
+            $post->save();
+        } else {
+            return ApiResponse::sendResponse(400, 'Invalid pet photo provided.');
         }
-        $post->fill($request->validated());
-        $post->save();
 
-        $postResource = new PostsResource($post);
+        $post->update($request->validated());
 
-        return ApiResponse::sendResponse(200, 'Post updated successfully', $postResource);
+        $postData = $post->toArray();
+        $postData['pet_photo'] = $photoUrl;
+
+        return ApiResponse::sendResponse(200, 'Post updated successfully', $postData);
     }
+
+
+
+    // ... (store method remains the same)
+
+
+
 
     public function destroy($id): JsonResponse
     {
