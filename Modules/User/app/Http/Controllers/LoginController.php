@@ -26,7 +26,7 @@ class LoginController extends Controller
 
             return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'user logged in Successfully', new LoginResource($currentUser));
         } else {
-            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'The email or password you entered is incorrect.', []);
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'The email or password you entered is incorrect.', ['The email or password you entered is incorrect.']);
 
         }
 

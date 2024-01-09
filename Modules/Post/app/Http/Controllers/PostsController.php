@@ -64,34 +64,34 @@ class PostsController extends Controller
     public function update(UpdatePostRequest $request, $id): JsonResponse
     {
         $post = Post::findOrFail($id);
-        if ($request->hasFile('pet_photo')) {
 
+        if ($request->hasFile('pet_photo')) {
+            // Check if a valid image is provided
             $extension = $request->file('pet_photo')->getClientOriginalExtension();
             $randomName = Str::random(10) . 'abed.' . $extension;
 
             $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
             $photoUrl = url('pet_photos/' . $randomName);
 
-            $post->pet_photo = $photoUrl;
+            // Store the full URL in the "pet_photo" attribute in the database
+            $fullPhotoUrl = url('/') . '/public/' . $photoUrl;
+            $post->pet_photo = $fullPhotoUrl;
             $post->save();
         } else {
             return ApiResponse::sendResponse(400, 'Invalid pet photo provided.');
         }
 
+        // Update other attributes of the Post model if needed
         $post->update($request->validated());
 
-        $postData = $post->toArray();
-        $postData['pet_photo'] = $photoUrl;
+        // Include the full URL in the response
+        $responseData = [
+            'photo_url' => $fullPhotoUrl,
+            'post_data' => $post->toArray(),
+        ];
 
-        return ApiResponse::sendResponse(200, 'Post updated successfully', $postData);
+        return ApiResponse::sendResponse(200, 'Post updated successfully', $responseData);
     }
-
-
-
-    // ... (store method remains the same)
-
-
-
 
     public function destroy($id): JsonResponse
     {
