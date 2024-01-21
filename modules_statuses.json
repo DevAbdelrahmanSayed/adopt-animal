@@ -6,5 +6,6 @@
     "Comment": true,
     "Like": true,
     "Favorite": true,
-    "Search": true
+    "Search": true,
+    "Chat": true
 }

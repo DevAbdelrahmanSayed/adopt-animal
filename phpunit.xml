@@ -6,27 +6,27 @@
 >
 
     <testsuites>
-<!--        <testsuite name="Unit">-->
-<!--            <directory>tests/Unit</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Feature">-->
-<!--            <directory>tests/Feature</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="User">-->
-<!--            <directory suffix="Test.php">Modules/User/tests</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Post">-->
-<!--            <directory suffix="Test.php">Modules/Post/tests</directory>-->
-<!--        </testsuite>-->
-<!--        <testsuite name="Category">-->
-<!--            <directory suffix="Test.php">Modules/Category/tests</directory>-->
-<!--        </testsuite>-->
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+        <testsuite name="User">
+            <directory suffix="Test.php">Modules/User/tests</directory>
+        </testsuite>
+        <testsuite name="Post">
+            <directory suffix="Test.php">Modules/Post/tests</directory>
+        </testsuite>
+        <testsuite name="Category">
+            <directory suffix="Test.php">Modules/Category/tests</directory>
+        </testsuite>
         <testsuite name="Favorite">
             <directory suffix="Test.php">Modules/Favorite/tests</directory>
         </testsuite>
-<!--        <testsuite name="Search">-->
-<!--            <directory suffix="Test.php">Modules/Search/tests</directory>-->
-<!--        </testsuite>-->
+        <testsuite name="Search">
+            <directory suffix="Test.php">Modules/Search/tests</directory>
+        </testsuite>
     </testsuites>
 
     <source>
