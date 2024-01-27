@@ -22,33 +22,17 @@ class ChatController extends Controller
         $user = Auth::user();
         $receiver = User::findOrFail($request->receiver_id);
 
-        // Create the new message
         $message = Chat::create([
             'sender_id' => $user->id,
             'receiver_id' => $receiver->id,
             'message' => $request->message,
         ]);
 
-        // Broadcast the new message
         broadcast(new MessageEvent($user, $message, now(), $receiver))->toOthers();
 
-
-//        MessageEvent::dispatch($user, $message, now(), $receiver);
         return ApiResponse::sendResponse(201, 'Receiver messages retrieved successfully',);
 
     }
 
-
-    public function getMessages(Request $request)
-    {
-        $user = Auth::user();
-
-        // Retrieve messages received by the authenticated user from the sender
-        $receiverMessages = Chat::where('receiver_id', $user->id)
-            ->orderBy('created_at', 'asc')
-            ->get();
-
-        return ApiResponse::sendResponse(200, 'Receiver messages retrieved successfully', ['messages' => $receiverMessages]);
-    }
 
 }
