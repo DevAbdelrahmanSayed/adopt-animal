@@ -15,6 +15,8 @@ use Modules\Chat\app\Http\Controllers\ChatController;
     |
 */
 
+\Illuminate\Support\Facades\Broadcast::routes(['middleware'=>['auth']]);
+
 
 Route::post('/chat/send', [ChatController::class,'sendMessage'])->middleware('auth');
 Route::get('/chat/messages', [ChatController::class,'getMessages'])->middleware('auth');

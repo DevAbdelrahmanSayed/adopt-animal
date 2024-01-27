@@ -18,6 +18,7 @@ class ChatController extends Controller
             'receiver_id' => 'required|exists:users,id',
             'message' => 'required|string',
         ]);
+
         $user = Auth::user();
         $receiver = User::findOrFail($request->receiver_id);
 
@@ -29,12 +30,14 @@ class ChatController extends Controller
         ]);
 
         // Broadcast the new message
-        broadcast(new MessageEvent($user, $message, $message->created_at, $receiver))->toOthers();
+        broadcast(new MessageEvent($user, $message, now(), $receiver))->toOthers();
 
-        return ApiResponse::sendResponse(201, 'Message created successfully', [
-            'messages' => $message
-        ]);
+
+//        MessageEvent::dispatch($user, $message, now(), $receiver);
+        return ApiResponse::sendResponse(201, 'Receiver messages retrieved successfully',);
+
     }
+
 
     public function getMessages(Request $request)
     {

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Modules\Chat\app\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -9,7 +8,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Support\Facades\Log;
 
 class MessageEvent implements ShouldBroadcast
 {
@@ -22,26 +21,31 @@ class MessageEvent implements ShouldBroadcast
 
     public function __construct($user, $message, $created_at, $receiver)
     {
-        $this->message = $message;
+        $this->message = $message->message; // Assuming $message is an object with a content property
         $this->sender_id = $user->id;
         $this->receiver_id = $receiver->id;
-        $this->created_at = $created_at;
+        $this->created_at = $created_at->toDateTimeString();
+
     }
 
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('chat');
+        return new Channel('chat.' . $this->receiver_id); // Scoped to receiver for privacy
     }
+
 
     public function broadcastWith()
     {
         return [
-            'message' => $this->message->content,
-            'sender_id' => $this->sender_id,
-            'receiver_id' => $this->receiver_id,
-            'created_at' => $this->created_at->toDateTimeString()
+            'chat' => [
+                'message' => $this->message,
+                'sender_id' => $this->sender_id,
+                'receiver_id' => $this->receiver_id,
+                'created_at' => $this->created_at,
+            ]
         ];
     }
+
 
     public function broadcastAs()
     {
