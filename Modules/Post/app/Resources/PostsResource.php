@@ -18,6 +18,7 @@ class PostsResource extends JsonResource
             'id' => $this->id,
             'category' => $this->category_id,
             'owner_name' => $this->user->name_,
+            'owner_id' => $this->user->id,
             'pet_photo' => $this->pet_photo,
             'pet_favorite' =>$this->isFavoritedByUser(),
             'pet_type' => $this->pet_type,
