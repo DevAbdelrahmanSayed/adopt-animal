@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\app\Http\Controllers\LoginController;
+use Modules\User\app\Http\Controllers\OtpController;
 use Modules\User\app\Http\Controllers\ProfileController;
 use Modules\User\app\Http\Controllers\RegisterController;
+use Modules\User\app\Http\Controllers\ResetPasswordController;
 
 /*
     |--------------------------------------------------------------------------
@@ -22,13 +24,17 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [LoginController::class,'storeLogin']);
     Route::get('login', [LoginController::class,'errors'])->name('login');
 });
-Route::middleware('auth')->group(function () {
-    Route::get('/profiles', [ProfileController::class, 'index']);
-    Route::put('/profile', [ProfileController::class, 'update']);
-    Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
+Route::middleware('auth:user')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index']);
+    Route::put('/profile/update', [ProfileController::class, 'update']);
+    Route::put('/profile/update/password', [ProfileController::class, 'changePassword']);
+});
+Route::prefix('otp')->group(function () {
+    Route::post('verify', [OtpController::class, 'verify'])->middleware('auth');
+    Route::post('resend', [OtpController::class, 'resendOtp'])->middleware('auth');
 });
 
 Route::prefix('password')->group(function () {
-    Route::post('verification', [ProfileController::class, 'resetLinkEmail']);
-    Route::post('reset', [ProfileController::class, 'resetPassword']);
+    Route::post('verification', [ResetPasswordController::class, 'resetLinkEmail'])->middleware('guest');
+    Route::post('reset', [ResetPasswordController::class, 'resetPassword'])->middleware('auth:user','verify.otp');
 });

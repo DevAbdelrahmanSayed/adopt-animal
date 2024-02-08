@@ -2,7 +2,12 @@
 
 namespace Modules\User\app\Http\Requests;
 
+use App\Helpers\ApiResponse;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\Rules\Password;
 
 class UpdatePasswordRequest extends FormRequest
 {
@@ -12,9 +17,16 @@ class UpdatePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'current_password' => 'required',
-            'new_password' => 'required|string|min:8|confirmed', // adjust rules as needed
-        ];
+            'old_password' => 'required','regex:/^[^<>]*$/',
+            'new_password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()]
+            ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        if (request()->is('api/*')) {
+            $response = ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Validation Errors', $validator->errors());
+            throw new HttpResponseException($response);
+        }
     }
 
     /**

@@ -22,7 +22,6 @@ class RegisterResource extends JsonResource
             'address' =>$this->address,
             'created_at' => Carbon::parse($this->created_at)->toTurkey(),
             'token'=>$this->token,
-
         ];
     }
 }

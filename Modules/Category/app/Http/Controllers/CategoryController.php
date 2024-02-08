@@ -29,7 +29,6 @@ class CategoryController extends Controller
     }
 
 
-
     public function show($categoryId)
     {
         $category = Category::with('posts.user')->find($categoryId);

@@ -15,13 +15,13 @@ class ProfileResource extends JsonResource
         return [
             'user_id' =>$this->id,
             'name'=>$this->name_,
+            'profile'=>$this->profile,
             'username'=>$this->username,
             'email'=>$this->email,
             'contact_number' =>$this->contact_number,
             'country' =>$this->country,
             'address' =>$this->address,
             'created_at' => Carbon::parse($this->created_at)->toTurkey(),
-
 
         ];
     }

@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name_');
+            $table->string('profile')->nullable();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
@@ -19,6 +20,9 @@ return new class extends Migration
             $table->string('country');
             $table->string('address');
             $table->timestamp('email_verified_at')->nullable();
+            $table->integer('otp_code')->nullable();
+            $table->boolean('is_otp_verified')->default(false);
+            $table->timestamp('otp_expires_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

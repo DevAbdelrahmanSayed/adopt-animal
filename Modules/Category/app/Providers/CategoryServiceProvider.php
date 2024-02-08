@@ -2,6 +2,7 @@
 
 namespace Modules\Category\app\Providers;
 
+use Modules\Category\app\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
