@@ -15,9 +15,10 @@ class Category extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = ['name'];
+
     public function posts()
     {
-        return $this->hasMany(Post::class,'category_id');
+        return $this->hasMany(Post::class, 'category_id');
     }
 
     protected static function newFactory(): CategoryFactory

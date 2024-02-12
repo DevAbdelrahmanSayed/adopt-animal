@@ -2,8 +2,8 @@
 
 namespace Modules\User\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Modules\User\Database\factories\PhoneFactory;
 
 class Phone extends Model
@@ -13,7 +13,7 @@ class Phone extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name','dial_code','iso_code'];
+    protected $fillable = ['name', 'dial_code', 'iso_code'];
 
     protected static function newFactory(): PhoneFactory
     {

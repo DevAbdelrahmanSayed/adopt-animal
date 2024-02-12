@@ -3,7 +3,6 @@
 namespace Modules\User\app\Models;
 
 use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -25,17 +24,18 @@ class User extends Authenticatable implements JWTSubject
         'country',
         'address',
         'otp_code',
-        'otp_expires_at'
+        'otp_expires_at',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'new_password'
     ];
 
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
     }
+    use HasFactory, Notifiable;
 
     public function setPasswordAttribute($value)
     {
@@ -57,10 +57,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Post::class, 'favorites', 'user_id', 'post_id');
     }
 
-    public function otp()
-    {
-        return $this->hasOne(__CLASS__, 'id');
-    }
 
     public function getJWTCustomClaims()
     {

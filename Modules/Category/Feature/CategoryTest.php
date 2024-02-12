@@ -2,8 +2,8 @@
 
 namespace Modules\Category\Feature;
 
-use Modules\Category\app\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Category\app\Models\Category;
 use Modules\Post\app\Models\Post;
 use Modules\User\app\Models\User;
 use Tests\TestCase;
@@ -18,9 +18,9 @@ class CategoryTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->category = Category::factory()->create();
-        $this->Post =  Post::factory()->create([
-            'user_id'=> $this->user,
-            'category_id'=>$this->category
+        $this->Post = Post::factory()->create([
+            'user_id' => $this->user,
+            'category_id' => $this->category,
 
         ]);
     }
@@ -54,7 +54,7 @@ class CategoryTest extends TestCase
         $this->actingAs($this->user);
         $category = Category::first();
 
-        $response = $this->getJson('api/v1/categories/' . $category->id.'/posts');
+        $response = $this->getJson('api/v1/categories/'.$category->id.'/posts');
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Posts retrieved successfully']);
@@ -66,7 +66,7 @@ class CategoryTest extends TestCase
 
         $nonExistentCategoryId = 999;
 
-        $response = $this->getJson('api/v1/categories/' . $nonExistentCategoryId.'/posts');
+        $response = $this->getJson('api/v1/categories/'.$nonExistentCategoryId.'/posts');
 
         $response->assertStatus(404)
             ->assertJson(['message' => 'Category not found']);
@@ -79,10 +79,9 @@ class CategoryTest extends TestCase
 
         $category->posts()->delete();
 
-        $response = $this->getJson('api/v1/categories/' . $category->id.'/posts');
+        $response = $this->getJson('api/v1/categories/'.$category->id.'/posts');
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'No posts exist for this category']);
     }
-
 }

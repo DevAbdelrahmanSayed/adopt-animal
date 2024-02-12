@@ -2,14 +2,11 @@
 
 namespace App\Providers;
 
-use App\Helpers\CrudService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\TelescopeServiceProvider;
-use Illuminate\Support\Facades\Schema;
-use Mockery\Mock;
-use Modules\User\app\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
-    Model::shouldBeStrict(!app()->isProduction());
+        Model::shouldBeStrict(! app()->isProduction());
     }
 
     /**
@@ -30,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Carbon::macro('toTurkey', function (){
+        Carbon::macro('toTurkey', function () {
             return $this->format('Y-m-d H:i:s');
         });
         Schema::defaultStringLength(191);

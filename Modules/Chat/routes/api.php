@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Chat\app\Http\Controllers\ChatController;
 
@@ -15,8 +14,7 @@ use Modules\Chat\app\Http\Controllers\ChatController;
     |
 */
 
-\Illuminate\Support\Facades\Broadcast::routes(['middleware'=>['auth']]);
+\Illuminate\Support\Facades\Broadcast::routes(['middleware' => ['auth']]);
 
-
-Route::post('/chat/send', [ChatController::class,'sendMessage'])->middleware('auth');
-Route::get('/chat/messages', [ChatController::class,'getMessages'])->middleware('auth');
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->middleware('auth');
+Route::get('/chat/messages', [ChatController::class, 'getMessages'])->middleware('auth');

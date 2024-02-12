@@ -10,14 +10,14 @@ use Illuminate\Validation\Rules\Password;
 
 class LoginRequest extends FormRequest
 {
-
     public function rules(): array
     {
-       return [
-           'username_email' => ['required', 'string','regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
-           'password' => ['required', 'regex:/^[^<>]*$/', Password::defaults()],
-       ];
+        return [
+            'username_email' => ['required', 'string', 'regex:/^[^<>\/\#\$%&\*\(\)_!#]*$/'],
+            'password' => ['required', 'regex:/^[^<>]*$/', Password::defaults()],
+        ];
     }
+
     protected function failedValidation(Validator $validator)
     {
         if (request()->is('api/*')) {

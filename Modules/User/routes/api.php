@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\app\Http\Controllers\LoginController;
 use Modules\User\app\Http\Controllers\OtpController;
@@ -20,9 +19,8 @@ use Modules\User\app\Http\Controllers\ResetPasswordController;
 */
 
 Route::middleware('guest')->group(function () {
-    Route::post('register', [RegisterController::class,'storeRegister']);
-    Route::post('login', [LoginController::class,'storeLogin']);
-    Route::get('login', [LoginController::class,'errors'])->name('login');
+    Route::post('register', [RegisterController::class, 'store']);
+    Route::post('login', [LoginController::class, 'store']);
 });
 Route::middleware('auth:user')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index']);
@@ -36,5 +34,5 @@ Route::prefix('otp')->group(function () {
 
 Route::prefix('password')->group(function () {
     Route::post('verification', [ResetPasswordController::class, 'resetLinkEmail'])->middleware('guest');
-    Route::post('reset', [ResetPasswordController::class, 'resetPassword'])->middleware('auth:user','verify.otp');
+    Route::post('reset', [ResetPasswordController::class, 'resetPassword'])->middleware('auth:user', 'verify.otp');
 });

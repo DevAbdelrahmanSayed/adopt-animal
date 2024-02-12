@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Modules\Category\app\Models\Category;
 use Modules\Post\app\Models\Post;
-use Modules\Post\app\Resources\PostsResource;
 use Modules\User\app\Models\User;
 use Tests\TestCase;
 
@@ -69,7 +68,7 @@ class PostsControllerTest extends TestCase
             'pet_gender' => 'Male',
             'pet_age' => 3,
             'pet_breed' => 'Labrador',
-            'pet_desc' => 'description'
+            'pet_desc' => 'description',
         ];
         $response = $this->postJson('api/v1/posts', $postData);
 
@@ -85,7 +84,6 @@ class PostsControllerTest extends TestCase
         $this->assertDatabaseHas('posts', ['pet_name' => 'Buddy']);
     }
 
-
     public function test_Destroy_Post()
     {
 
@@ -99,15 +97,14 @@ class PostsControllerTest extends TestCase
 
         $response = $this->deleteJson("/api/v1/posts/{$post->id}");
 
-
         $response->assertStatus(200);
         $response->assertJson(['message' => 'Post deleted successfully']);
 
-
         $this->assertDatabaseMissing('posts', ['id' => $post->id]);
 
-        Storage::disk('public')->assertMissing('pet_photos/' . $fakeFile->hashName());
+        Storage::disk('public')->assertMissing('pet_photos/'.$fakeFile->hashName());
     }
+
     public function test_Show_Post()
     {
 
@@ -121,25 +118,25 @@ class PostsControllerTest extends TestCase
             'status',
             'message',
             'data' => [
-                    'id',
-                    'category',
-                    'owner_name',
-                    'pet_photo',
-                    'pet_favorite',
-                    'pet_type',
-                    'pet_name',
-                    'pet_gender',
-                    'pet_age',
-                    'pet_breed',
-                    'pet_desc',
-                    'contact_number',
-                    'country',
-                    'address',
-                    'created_at',
-                ],
+                'id',
+                'category',
+                'owner_name',
+                'pet_photo',
+                'pet_favorite',
+                'pet_type',
+                'pet_name',
+                'pet_gender',
+                'pet_age',
+                'pet_breed',
+                'pet_desc',
+                'contact_number',
+                'country',
+                'address',
+                'created_at',
+            ],
         ]);
 
-           $this->assertDatabaseHas('posts', [
+        $this->assertDatabaseHas('posts', [
             'id' => $post->id,
             'category_id' => $post->category_id,
         ]);
@@ -153,7 +150,7 @@ class PostsControllerTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->getJson("/api/v1/user/posts");
+        $response = $this->getJson('/api/v1/user/posts');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -180,5 +177,4 @@ class PostsControllerTest extends TestCase
                 ],
             ]);
     }
-
 }

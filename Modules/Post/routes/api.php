@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use Modules\Post\app\Http\Controllers\PostsController;
 
@@ -13,8 +14,5 @@ use Modules\Post\app\Http\Controllers\PostsController;
     |
 */
 
-
-
-
 Route::apiResource('posts', PostsController::class)->middleware('auth');
-Route::get('user/posts', [PostsController::class,'showUserPosts'])->middleware('auth');
+Route::get('user/posts', [PostsController::class, 'showUserPosts'])->middleware('auth');

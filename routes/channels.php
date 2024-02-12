@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
- Broadcast::channel('private-chat.{receiverId}', function ($user, $receiverId) {
-     // Your custom logic to check if the user can access the channel
-     return false;
- });
+Broadcast::channel('private-chat.{receiverId}', function ($user, $receiverId) {
+    // Your custom logic to check if the user can access the channel
+    return false;
+});

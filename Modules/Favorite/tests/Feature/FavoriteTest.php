@@ -2,15 +2,13 @@
 
 namespace Modules\Favorite\tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Post\app\Models\Post;
 use Modules\User\app\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class FavoriteTest extends TestCase
 {
-
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -38,7 +36,7 @@ class FavoriteTest extends TestCase
         $this->actingAs($this->user);
         $post = Post::first();
 
-        $response = $this->postJson('api/v1/posts/'. $post->id .'/favorite');
+        $response = $this->postJson('api/v1/posts/'.$post->id.'/favorite');
         $response->assertStatus(201)
             ->assertJson(['message' => 'Favorite added successfully']);
     }
@@ -49,7 +47,7 @@ class FavoriteTest extends TestCase
         $post = Post::first();
         $this->user->favorites()->attach($post);
 
-        $response = $this->postJson('api/v1/posts/'. $post->id .'/favorite');
+        $response = $this->postJson('api/v1/posts/'.$post->id.'/favorite');
         $response->assertStatus(200)
             ->assertJson(['message' => 'Error: Post already favorited']);
     }
@@ -60,9 +58,8 @@ class FavoriteTest extends TestCase
         $post = Post::first();
         $this->user->favorites()->attach($post);
 
-        $response = $this->deleteJson('api/v1/posts/'. $post->id .'/favorite');
+        $response = $this->deleteJson('api/v1/posts/'.$post->id.'/favorite');
         $response->assertStatus(200)
             ->assertJson(['message' => 'Favorite deleted successfully']);
     }
 }
-

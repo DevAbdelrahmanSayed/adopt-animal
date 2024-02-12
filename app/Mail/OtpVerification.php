@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -18,9 +17,9 @@ class OtpVerification extends Mailable
      */
     public function __construct(public $username, public $otp_code, public $otp_expires_at)
     {
-        $this->username=$username;
-        $this->otp_code=$otp_code;
-        $this->otp_expires_at=$otp_expires_at;
+        $this->username = $username;
+        $this->otp_code = $otp_code;
+        $this->otp_expires_at = $otp_expires_at;
     }
 
     /**

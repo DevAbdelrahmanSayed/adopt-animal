@@ -2,13 +2,14 @@
 
 namespace Modules\User\tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\User\app\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserLoginTest extends TestCase
 {
     use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -23,6 +24,7 @@ class UserLoginTest extends TestCase
             'contact_number' => '5070145054',
         ]);
     }
+
     public function test_can_be_login(): void
     {
         $loginData = [
@@ -33,11 +35,10 @@ class UserLoginTest extends TestCase
         // Attempt to login with valid credentials
         $response = $this->postJson('api/v1/login', $loginData);
 
-
         $response->assertStatus(200)
             ->assertJsonStructure([
-                "status",
-                "message",
+                'status',
+                'message',
                 'data' => [
                     'user_id',
                     'username',
@@ -58,8 +59,8 @@ class UserLoginTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                "status",
-                "message",
+                'status',
+                'message',
                 'data' => [
                     'user_id',
                     'name',
@@ -82,8 +83,8 @@ class UserLoginTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure([
-                "status",
-                "message",
+                'status',
+                'message',
                 'data' => [
                     'user_id',
                     'username',
@@ -92,6 +93,7 @@ class UserLoginTest extends TestCase
                 ],
             ]);
     }
+
     public function test_login_with_missing_login_identifier()
     {
         $loginData = [
@@ -104,17 +106,17 @@ class UserLoginTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJson([
-                "status" => 422,
-                "message" => 'Validation Errors',
+                'status' => 422,
+                'message' => 'Validation Errors',
                 'data' => [
                     'username_email' => [
-                        "The username email field is required."
+                        'The username email field is required.',
                     ],
                 ],
             ]);
 
-
     }
+
     public function test_login_with_missing_password()
     {
         $loginData = [
@@ -125,11 +127,11 @@ class UserLoginTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJson([
-                "status" => 422,
-                "message" => 'Validation Errors',
+                'status' => 422,
+                'message' => 'Validation Errors',
                 'data' => [
                     'password' => [
-                        "The password field is required."
+                        'The password field is required.',
                     ],
                 ],
             ]);

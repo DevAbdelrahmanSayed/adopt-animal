@@ -30,9 +30,7 @@ class ChatController extends Controller
 
         broadcast(new MessageEvent($user, $message, now(), $receiver))->toOthers();
 
-        return ApiResponse::sendResponse(201, 'Receiver messages retrieved successfully',);
+        return ApiResponse::sendResponse(201, 'Receiver messages retrieved successfully');
 
     }
-
-
 }

@@ -2,15 +2,14 @@
 
 namespace Modules\Chat\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Chat\Database\factories\ChatFactory;
 use Modules\User\app\Models\User;
 
 class Chat extends Model
 {
     use HasFactory;
-
 
     protected $fillable = [
         'sender_id',
@@ -27,13 +26,12 @@ class Chat extends Model
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
+
     /**
      * The attributes that are mass assignable.
      */
-
     protected static function newFactory()
     {
         //return ChatFactory::new();
     }
-
 }

@@ -22,7 +22,7 @@ class UpdatePostRequest extends FormRequest
             'pet_gender' => 'string',
             'pet_age' => 'integer|digits_between:1,2',
             'pet_breed' => 'string',
-            'pet_desc'  => 'string'
+            'pet_desc' => 'string',
         ];
     }
 

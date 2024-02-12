@@ -2,17 +2,15 @@
 
 namespace Modules\User\tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class RegisterUnitTest extends TestCase
 {
     use RefreshDatabase;
+
     /**
      * A basic unit test example.
-     *
-     * @return void
      */
     public function test_it_requires_name_username_email_country_address_contactNumber_password(): void
     {
@@ -34,7 +32,7 @@ class RegisterUnitTest extends TestCase
     public function test_it_requires_unique_username_email_contact_number(): void
     {
         $userData = [
-            'name_'=>'tester',
+            'name_' => 'tester',
             'username' => 'testuser',
             'email' => 'test@gmail.com',
             'password' => 'Lkjhgfdsad12#',
@@ -60,10 +58,11 @@ class RegisterUnitTest extends TestCase
         $this->assertEquals(['The contact number has already been taken.'], $response['data']['contact_number']);
 
     }
+
     public function test_validation_for_special_characters_in_name_username_email_country_address_contactNumber_password(): void
     {
         $userData = [
-            'name_'=>'tester<',
+            'name_' => 'tester<',
             'username' => 'tester</',
             'email' => 'test/@gmail.com',
             'password' => 'Lkjhgfds2#<scr/',
@@ -84,7 +83,6 @@ class RegisterUnitTest extends TestCase
         $this->assertEquals(['The address field format is invalid.'], $response['data']['address']);
         $this->assertEquals(['The country field format is invalid.'], $response['data']['country']);
     }
-
 
     public function test_password_minimum_length()
     {
@@ -118,9 +116,6 @@ class RegisterUnitTest extends TestCase
         $this->assertEquals(['The password field must contain at least one symbol.'], $response['data']['password']);
     }
 
-
-
-
     private function registerWithPassword($password)
     {
         return $this->postJson('api/v1/register', [
@@ -133,5 +128,4 @@ class RegisterUnitTest extends TestCase
             'contact_number' => '1234567890',
         ]);
     }
-
 }

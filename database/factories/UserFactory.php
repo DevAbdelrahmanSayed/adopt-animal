@@ -4,10 +4,10 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-
 class UserFactory extends Factory
 {
     protected $model = \Modules\User\app\Models\User::class;
+
     public function definition(): array
     {
         return [

@@ -2,14 +2,12 @@
 
 namespace Modules\User\tests\Unit;
 
-use Database\Factories\UserFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\User\app\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class LoginUnitTest extends TestCase
 {
-
     use RefreshDatabase;
 
     protected function setUp(): void
@@ -31,35 +29,38 @@ class LoginUnitTest extends TestCase
     {
         $response = $this->postJson('api/v1/login', [
             'username_email' => 'wrongemail@gmail.com',
-            'password' => 'ValidPass123!'
+            'password' => 'ValidPass123!',
         ]);
 
         $response->assertStatus(422);
 
         $this->assertEquals('The email or password you entered is incorrect.', $response['message']);
     }
+
     public function test_Invalid_Login_With_Incorrect_Username()
     {
         $response = $this->postJson('api/v1/login', [
             'username_email' => 'wrongUsername',
-            'password' => 'ValidPass123!'
+            'password' => 'ValidPass123!',
         ]);
 
         $response->assertStatus(422);
 
         $this->assertEquals('The email or password you entered is incorrect.', $response['message']);
     }
+
     public function test_Invalid_Login_With_Incorrect_Password()
     {
         $response = $this->postJson('api/v1/login', [
             'username_email' => 'validemail@gmail.com',
-            'password' => 'WrongPass123!'
+            'password' => 'WrongPass123!',
         ]);
 
         $response->assertStatus(422);
 
         $this->assertEquals('The email or password you entered is incorrect.', $response['message']);
     }
+
     public function test_login_with_missing_login_identifier()
     {
         $loginData = [
@@ -71,15 +72,16 @@ class LoginUnitTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJson([
-                "status" => 422,
-                "message" => 'Validation Errors',
+                'status' => 422,
+                'message' => 'Validation Errors',
                 'data' => [
                     'username_email' => [
-                        "The username email field is required."
+                        'The username email field is required.',
                     ],
                 ],
             ]);
     }
+
     public function test_login_with_missing_password()
     {
         $loginData = [
@@ -90,11 +92,11 @@ class LoginUnitTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJson([
-                "status" => 422,
-                "message" => 'Validation Errors',
+                'status' => 422,
+                'message' => 'Validation Errors',
                 'data' => [
                     'password' => [
-                        "The password field is required."
+                        'The password field is required.',
                     ],
                 ],
             ]);

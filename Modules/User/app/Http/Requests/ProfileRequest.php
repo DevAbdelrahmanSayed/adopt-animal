@@ -16,15 +16,16 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name_' => [ 'string', 'min:3', 'max:25'],
-            'username' => ['string', 'min:3', 'max:30','unique:users'],
-            'email' => [ 'email', 'unique:users,email'],
+            'name_' => ['string', 'min:3', 'max:25'],
+            'username' => ['string', 'min:3', 'max:30', 'unique:users'],
+            'email' => ['email', 'unique:users,email'],
             'profile' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'contact_number' => 'string|unique:users,contact_number',
             'country' => 'string|max:255',
             'address' => 'string|max:255',
         ];
     }
+
     protected function failedValidation(Validator $validator)
     {
         if (request()->is('api/*')) {
@@ -32,7 +33,6 @@ class ProfileRequest extends FormRequest
             throw new HttpResponseException($response);
         }
     }
-
 
     /**
      * Determine if the user is authorized to make this request.

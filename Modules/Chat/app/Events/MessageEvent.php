@@ -2,21 +2,22 @@
 
 namespace Modules\Chat\app\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\Channel;
-use Illuminate\Support\Facades\Log;
 
 class MessageEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
+
     public $sender_id;
+
     public $receiver_id;
+
     public $created_at;
 
     public function __construct($user, $message, $created_at, $receiver)
@@ -30,9 +31,8 @@ class MessageEvent implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        return new Channel('chat.' . $this->receiver_id); // Scoped to receiver for privacy
+        return new Channel('chat.'.$this->receiver_id); // Scoped to receiver for privacy
     }
-
 
     public function broadcastWith()
     {
@@ -42,10 +42,9 @@ class MessageEvent implements ShouldBroadcast
                 'sender_id' => $this->sender_id,
                 'receiver_id' => $this->receiver_id,
                 'created_at' => $this->created_at,
-            ]
+            ],
         ];
     }
-
 
     public function broadcastAs()
     {

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Favorite\app\Http\Controllers\FavoriteController;
 
@@ -15,11 +14,11 @@ use Modules\Favorite\app\Http\Controllers\FavoriteController;
     |
 */
 
-Route::controller(FavoriteController::class)->middleware('auth')->group(function (){
+Route::controller(FavoriteController::class)->middleware('auth')->group(function () {
 
-    Route::get('/favorites',  'index');
+    Route::get('/favorites', 'index');
 
-    Route::post('/posts/{post}/favorite',  'addFavorite');
+    Route::post('/posts/{post}/favorite', 'addFavorite');
 
     Route::delete('/posts/{post}/favorite', 'removeFavorite');
 

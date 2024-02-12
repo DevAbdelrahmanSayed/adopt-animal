@@ -40,5 +40,4 @@ return [
         'app_id' => env('FIREBASE_APP_ID'),
     ],
 
-
 ];

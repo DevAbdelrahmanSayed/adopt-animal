@@ -17,12 +17,12 @@ class PostsRequest extends FormRequest
         return [
             'category_id' => ['required', 'exists:categories,id'],
             'pet_photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'pet_type' => ['required', 'string','regex:/^[^\d]+$/','regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
-            'pet_name' => ['required', 'string', 'regex:/^[^\d]+$/','regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
-            'pet_gender' => ['required', 'string', 'regex:/^[^\d]+$/','regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
+            'pet_type' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
+            'pet_name' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
+            'pet_gender' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
             'pet_age' => ['required', 'integer', 'digits_between:1,2'],
-            'pet_breed' => ['required', 'string', 'regex:/^[^\d]+$/','regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
-            'pet_desc' => ['required', 'string', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/']
+            'pet_breed' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
+            'pet_desc' => ['required', 'string', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
         ];
     }
 
@@ -33,7 +33,6 @@ class PostsRequest extends FormRequest
             throw new HttpResponseException($response);
         }
     }
-
 
     public function authorize(): bool
     {

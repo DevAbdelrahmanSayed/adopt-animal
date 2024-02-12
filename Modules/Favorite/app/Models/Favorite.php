@@ -2,8 +2,8 @@
 
 namespace Modules\Favorite\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Favorite\Database\factories\FavoriteFactory;
 
 class Favorite extends Model
@@ -14,7 +14,7 @@ class Favorite extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [];
-    
+
     protected static function newFactory(): FavoriteFactory
     {
         //return FavoriteFactory::new();

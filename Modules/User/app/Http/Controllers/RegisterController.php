@@ -6,18 +6,18 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\User\app\Http\Requests\RegisterRequest;
-use Modules\User\app\Models\User;
 use Modules\User\app\Resources\RegisterResource;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
-
+use Modules\User\Dto\UserDto;
+use Modules\User\Services\RegisterService;
 
 class RegisterController extends Controller
 {
-    public function storeRegister(RegisterRequest $request)
+    public function store(RegisterRequest $request, RegisterService $registerService)
     {
-        $userData = User::create($request->validated());
-        $userData['token'] = JWTAuth::fromUser($userData);
-        return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'User Account Created Successfully',new RegisterResource($userData));
+        $requestData = UserDto::fromRegisterRequest($request);
+        $responseData = $registerService->store($requestData);
+
+        return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'User Account Created Successfully', new RegisterResource($responseData));
 
     }
 }

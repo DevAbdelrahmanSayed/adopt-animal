@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\Auth;
 use Modules\User\app\Http\Requests\ProfileRequest;
 use Modules\User\app\Http\Requests\UpdatePasswordRequest;
 use Modules\User\app\Resources\ProfileResource;
+use Modules\User\Dto\UserDto;
 use Modules\User\Services\ProfileService;
 
 class ProfileController extends Controller
 {
-    public function __construct(protected ProfileService $profileService){}
+    public function __construct(protected ProfileService $profileService)
+    {
+    }
 
     public function index(): JsonResponse
     {
@@ -23,10 +26,13 @@ class ProfileController extends Controller
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Error retrieving user profile.');
         }
     }
+
     public function update(ProfileRequest $request): JsonResponse
     {
         try {
-            $responseData =  $this->profileService->update(Auth::user(),$request->validated());
+
+            $requestData = UserDto::fromProfileRequest($request);
+            $responseData = $this->profileService->update(Auth::user(), $requestData);
 
             return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User profile updated successfully', new ProfileResource($responseData));
         } catch (\Exception $exception) {
@@ -37,15 +43,15 @@ class ProfileController extends Controller
     public function changePassword(UpdatePasswordRequest $request): JsonResponse
     {
         try {
+            $requestData = UserDto::fromUpdatePasswordRequest($request);
+            if ($this->profileService->changePassword(Auth::user(), $requestData)) {
 
-            if($this->profileService->changePassword(Auth::user(),$request->validated())){
-
-                return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'password updated successfully',);
-            }else{
+                return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'password updated successfully');
+            } else {
                 return ApiResponse::sendResponse(JsonResponse::HTTP_NOT_FOUND, 'old password not correct');
             }
 
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, $exception->getMessage());
         }
 

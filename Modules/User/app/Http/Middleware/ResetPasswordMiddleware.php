@@ -21,6 +21,4 @@ class ResetPasswordMiddleware
 
         return ApiResponse::sendResponse(JsonResponse::HTTP_FORBIDDEN, 'OTP verification required');
     }
-
-
 }

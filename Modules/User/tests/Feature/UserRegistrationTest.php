@@ -7,13 +7,12 @@ use Tests\TestCase;
 
 class UserRegistrationTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_it_registers_a_new_user(): void
     {
         $userData = [
-            'name_'=>'tester',
+            'name_' => 'tester',
             'username' => 'testuser',
             'email' => 'test@gmail.com',
             'password' => 'Lkjhgfdsad12#',
@@ -24,8 +23,8 @@ class UserRegistrationTest extends TestCase
         $response = $this->postJson('api/v1/register', $userData);
         $response->assertStatus(201)
             ->assertJsonStructure([
-                "status",
-                "message",
+                'status',
+                'message',
                 'data' => [
                     'user_id',
                     'name',
@@ -39,12 +38,10 @@ class UserRegistrationTest extends TestCase
                 ],
             ]);
 
-
-        $this->assertArrayHasKey('token',$response['data']);
+        $this->assertArrayHasKey('token', $response['data']);
         $this->assertDatabaseHas('users', [
             'username' => 'testuser',
             'email' => 'test@gmail.com',
         ]);
     }
-
 }

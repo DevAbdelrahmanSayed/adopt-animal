@@ -5,42 +5,33 @@ namespace Modules\User\Services;
 use App\Helpers\MediaService;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\app\Models\User;
+use Modules\User\Dto\UserDto;
 
 class ProfileService
 {
-    public function __construct()
+    public function changePassword(user $user, UserDto $userDto)
     {
-        $this->userModel = new MediaService(User::class);
-    }
+        if (Hash::check($userDto->password, $user->password)) {
+            $user->update(['password' => $userDto->newPassword]);
 
-    public function changePassword($user, $requestData)
-    {
-        if (Hash::check($requestData->old_password, $user->password)) {
-            $user->update(['password' => $requestData->new_password]);
             return true;
         } else {
             return false;
         }
     }
 
-
-    public function update($user, $requestData)
+    public function update(user $user, UserDto $userDto): User
     {
+        // Filter out null values from the DTO array
+        $updatedData = array_filter($userDto->toArrayProfile());
 
-        $currentProfile = $user->profile;
-
-        if (isset($requestData['profile'])){
-            $photoUrl = $requestData['profile'];
-            $pathPhoto = $this->userModel->storePhoto($user->id, $photoUrl);
-            $requestData['profile'] = $pathPhoto;
+        $user->update($updatedData);
+        if (! is_null($userDto->profile)) {
+            $pathPhoto = MediaService::storePhoto($user->id, $userDto->profile);
+            $user->profile = $pathPhoto;
+            $user->save();
         }
-        if ($user->profile) {
 
-            $this->userModel->deleteOldPhoto($user->id);
-        }
-        $user->update($requestData);
         return $user;
     }
-
-
 }

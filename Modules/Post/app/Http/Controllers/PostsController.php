@@ -6,8 +6,6 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Modules\Post\app\Http\Requests\PostsRequest;
 use Modules\Post\app\Http\Requests\UpdatePostRequest;
@@ -28,10 +26,10 @@ class PostsController extends Controller
     {
         if ($request->hasFile('pet_photo')) {
             $extension = $request->file('pet_photo')->getClientOriginalExtension();
-            $randomName = Str::random(10) . 'abed.' . $extension;
+            $randomName = Str::random(10).'abed.'.$extension;
 
             $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
-            $photoUrl = url('pet_photos/' . $randomName);
+            $photoUrl = url('pet_photos/'.$randomName);
         }
 
         $userId = Auth::id();
@@ -44,7 +42,7 @@ class PostsController extends Controller
     public function show($id): JsonResponse
     {
         $post = Post::findOrFail($id);
-        if (is_null($post)){
+        if (is_null($post)) {
             return ApiResponse::sendResponse(200, 'no Post found');
         }
 
@@ -61,6 +59,7 @@ class PostsController extends Controller
 
         return ApiResponse::sendResponse(200, 'User posts retrieved successfully', $postResource);
     }
+
     public function update(UpdatePostRequest $request, $id): JsonResponse
     {
         $post = Post::findOrFail($id);
@@ -68,13 +67,13 @@ class PostsController extends Controller
         if ($request->hasFile('pet_photo')) {
             // Check if a valid image is provided
             $extension = $request->file('pet_photo')->getClientOriginalExtension();
-            $randomName = Str::random(10) . 'abed.' . $extension;
+            $randomName = Str::random(10).'abed.'.$extension;
 
             $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
-            $photoUrl = url('pet_photos/' . $randomName);
+            $photoUrl = url('pet_photos/'.$randomName);
 
             // Store the full URL in the "pet_photo" attribute in the database
-            $fullPhotoUrl = url('/') . '/public/' . $photoUrl;
+            $fullPhotoUrl = url('/').'/public/'.$photoUrl;
             $post->pet_photo = $fullPhotoUrl;
             $post->save();
         } else {

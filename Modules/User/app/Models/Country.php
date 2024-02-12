@@ -2,8 +2,8 @@
 
 namespace Modules\User\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Modules\User\Database\factories\CountryFactory;
 
 class Country extends Model
@@ -13,7 +13,7 @@ class Country extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = ['name','code'];
+    protected $fillable = ['name', 'code'];
 
     protected static function newFactory(): CountryFactory
     {

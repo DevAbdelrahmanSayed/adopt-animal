@@ -2,16 +2,14 @@
 
 namespace Modules\Category\app\Providers;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
     /**
      * The module namespace to assume when generating URLs to actions.
      */
-
-
     protected string $moduleNamespace = 'Modules\Category\app\Http\Controllers';
 
     /**

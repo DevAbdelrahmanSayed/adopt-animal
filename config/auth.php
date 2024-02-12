@@ -37,15 +37,14 @@ return [
 
     'guards' => [
         'user' => [
-         'driver' => 'jwt',
-          'provider' => 'users',
-            ],
+            'driver' => 'jwt',
+            'provider' => 'users',
+        ],
         'admin' => [
             'driver' => 'jwt',
             'provider' => 'admins',
         ],
     ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -67,13 +66,13 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => Modules\User\app\Models\User::class
+            'model' => Modules\User\app\Models\User::class,
         ],
 
-//        'admins' => [
-//            'driver' => 'eloquent',
-//            'model' => Modules\User\Models\User::class
-//        ],
+        //        'admins' => [
+        //            'driver' => 'eloquent',
+        //            'model' => Modules\User\Models\User::class
+        //        ],
     ],
 
     /*

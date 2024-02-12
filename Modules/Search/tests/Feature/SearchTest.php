@@ -2,12 +2,11 @@
 
 namespace Modules\Search\tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Category\app\Models\Category;
 use Modules\Post\app\Models\Post;
 use Modules\User\app\Models\User;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SearchTest extends TestCase
 {
@@ -32,7 +31,7 @@ class SearchTest extends TestCase
             'pet_name' => 'Buddy',
             'pet_gender' => 'Male',
             'pet_age' => '2',
-            'pet_breed' => 'Labrador'
+            'pet_breed' => 'Labrador',
         ]);
 
         Post::factory()->create([
@@ -44,16 +43,17 @@ class SearchTest extends TestCase
             'pet_name' => 'Whiskers',
             'pet_gender' => 'Female',
             'pet_age' => '3',
-            'pet_breed' => 'Siamese'
+            'pet_breed' => 'Siamese',
         ]);
         // Create more posts as needed for diverse search scenarios
     }
+
     public function test_search_finds_relevant_posts_by_breed()
     {
         $this->actingAs($this->user);
         $searchTerm = 'Labrador';
 
-        $response = $this->getJson('api/v1/search?text=' . $searchTerm);
+        $response = $this->getJson('api/v1/search?text='.$searchTerm);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -74,7 +74,7 @@ class SearchTest extends TestCase
         $this->actingAs($this->user);
         $searchTerm = 'Cat';
 
-        $response = $this->getJson('api/v1/search?text=' . $searchTerm);
+        $response = $this->getJson('api/v1/search?text='.$searchTerm);
 
         $response->assertStatus(200)
             ->assertJson([
@@ -89,12 +89,13 @@ class SearchTest extends TestCase
         $responseData = $response->json('data');
         $this->assertCount(1, $responseData);
     }
+
     public function test_search_finds_relevant_posts_by_name()
     {
         $this->actingAs($this->user);
         $searchTerm = 'Whiskers';
 
-        $response = $this->getJson('api/v1/search?text=' . $searchTerm);
+        $response = $this->getJson('api/v1/search?text='.$searchTerm);
 
         $response->assertStatus(200)
             ->assertJson([

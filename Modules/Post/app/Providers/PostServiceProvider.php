@@ -2,7 +2,6 @@
 
 namespace Modules\Post\app\Providers;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
@@ -101,7 +100,6 @@ class PostServiceProvider extends ServiceProvider
 
         return [];
     }
-
 
     private function getPublishableViewPaths(): array
     {

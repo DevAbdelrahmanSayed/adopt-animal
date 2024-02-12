@@ -4,17 +4,12 @@ namespace Modules\Category\app\Http\Controllers;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Modules\Category\app\Http\Requests\ShowCategoryRequest;
 use Modules\Category\app\Models\Category;
 use Modules\Category\app\Resources\CategoryResource;
 use Modules\Post\app\Resources\PostsResource;
 
 class CategoryController extends Controller
 {
-
     public function index()
     {
         $categories = Category::all();
@@ -27,7 +22,6 @@ class CategoryController extends Controller
 
         return ApiResponse::sendResponse(200, 'No Categories exist');
     }
-
 
     public function show($categoryId)
     {
@@ -43,12 +37,8 @@ class CategoryController extends Controller
 
         $posts = $category->posts;
 
-
         $postResource = PostsResource::collection($posts);
 
         return ApiResponse::sendResponse(200, 'Posts retrieved successfully', $postResource);
     }
-
-
-
 }

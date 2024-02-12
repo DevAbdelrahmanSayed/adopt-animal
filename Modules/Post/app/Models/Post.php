@@ -26,6 +26,7 @@ class Post extends Model
         'pet_age',
         'pet_breed',
     ];
+
     protected $searchable = [
         'pet_breed',
         'pet_type',
@@ -35,33 +36,38 @@ class Post extends Model
         'pet_desc',
 
     ];
+
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
     public function favoritedBy()
     {
-        return $this->belongsToMany(User::class, 'favorites','post_id', 'user_id');
+        return $this->belongsToMany(User::class, 'favorites', 'post_id', 'user_id');
     }
+
     public function isFavoritedByUser()
     {
         $userId = auth()->id();
+
         return $this->favoritedBy()->where('user_id', $userId)->exists();
     }
-
 
     public function scopeSearch($query, $texts)
     {
         $textArray = explode(' ', $texts);
-        foreach ($textArray as $text){
-            foreach ($this->searchable as $column){
-                $query->orWhere($column, 'like', '%' . $text . '%');
+        foreach ($textArray as $text) {
+            foreach ($this->searchable as $column) {
+                $query->orWhere($column, 'like', '%'.$text.'%');
             }
         }
+
         return $query;
     }
 
@@ -69,5 +75,4 @@ class Post extends Model
     {
         return PostFactory::new();
     }
-
 }
