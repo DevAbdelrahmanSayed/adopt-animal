@@ -43,6 +43,7 @@ class ProfileController extends Controller
     public function changePassword(UpdatePasswordRequest $request): JsonResponse
     {
         try {
+            dd($request->password);
             $requestData = UserDto::fromUpdatePasswordRequest($request);
             if ($this->profileService->changePassword(Auth::user(), $requestData)) {
 
