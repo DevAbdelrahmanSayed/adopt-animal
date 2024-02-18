@@ -14,13 +14,11 @@ class MediaService
     public static function storePhoto($id, $image)
     {
         $imageName = time().$id.'.'.$image->getClientOriginalExtension();
-        $image->storeAs('public/images', $imageName);
+        $image->move(public_path('images'), $imageName); // Move the image to the public directory
 
-        $relativeImagePath = 'public/images/'.$imageName;
+        $relativeImagePath = 'images/' . $imageName;
 
-        $imagePath = Storage::url($relativeImagePath);
-
-        return $imagePath;
+        return $relativeImagePath;
     }
 
     public static function deleteOldPhoto($id, $model)
@@ -45,7 +43,7 @@ class MediaService
         $imagePaths = [];
 
         foreach ($images as $image) {
-            $imageName = time() . '_' . $image->getClientOriginalName();
+            $imageName = time() . 'Adopt' . $image->getClientOriginalExtension();
             $image->move(public_path('posts'), $imageName); // Move the image to the public directory
             $imagePaths[] = 'posts/' . $imageName; // Store the relative path
         }
