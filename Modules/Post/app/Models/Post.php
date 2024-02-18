@@ -26,7 +26,19 @@ class Post extends Model
         'pet_age',
         'pet_breed',
     ];
+    protected $casts = [
+        'pet_photo' => 'json',
+    ];
 
+    public function setPhotosAttribute($value)
+    {
+        $this->attributes['pet_photo'] = json_encode($value);
+    }
+
+    public function getPhotosAttribute($value)
+    {
+        return json_decode($value, true);
+    }
     protected $searchable = [
         'pet_breed',
         'pet_type',

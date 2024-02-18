@@ -15,8 +15,8 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'exists:categories,id', // Corrected: use pipe instead of comma
-            'pet_photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'category_id' => 'exists:categories,id',
+            'pet_photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'pet_type' => 'string',
             'pet_name' => 'string',
             'pet_gender' => 'string',

@@ -6,106 +6,93 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Modules\Post\app\Http\Requests\PostsRequest;
 use Modules\Post\app\Http\Requests\UpdatePostRequest;
-use Modules\Post\app\Models\Post;
 use Modules\Post\app\Resources\PostsResource;
+use Modules\Post\app\Resources\UpdatePostResource;
+use Modules\Post\Dto\PostDto;
+use Modules\Post\Services\PostService;
 
 class PostsController extends Controller
 {
+    public function __construct(protected PostService $postService)
+    {
+    }
     public function index(): JsonResponse
     {
-        $posts = Post::latest()->get();
-        $postsResource = PostsResource::collection($posts);
 
-        return ApiResponse::sendResponse(200, 'Posts retrieved successfully', $postsResource);
+            $posts = $this->postService->getAllPosts();
+            $postsResource = PostsResource::collection($posts);
+
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Posts retrieved successfully', $postsResource);
+
     }
 
     public function store(PostsRequest $request): JsonResponse
     {
-        if ($request->hasFile('pet_photo')) {
-            $extension = $request->file('pet_photo')->getClientOriginalExtension();
-            $randomName = Str::random(10).'abed.'.$extension;
+        try {
+            $requestData = PostDto::fromPostRequest($request, Auth::id());
+            $responseData = $this->postService->store($requestData);
 
-            $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
-            $photoUrl = url('pet_photos/'.$randomName);
+            return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'Post created successfully', ['post_id' => $responseData->id]);
+        } catch (\Exception $e) {
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while creating the post');
         }
-
-        $userId = Auth::id();
-        $requestData = array_merge($request->validated(), ['user_id' => $userId, 'pet_photo' => $photoUrl]);
-        $post = Post::create($requestData);
-
-        return ApiResponse::sendResponse(201, 'Post created successfully', ['post_id' => $post->id]);
     }
 
-    public function show($id): JsonResponse
+    public function show($postId): JsonResponse
     {
-        $post = Post::findOrFail($id);
-        if (is_null($post)) {
-            return ApiResponse::sendResponse(200, 'no Post found');
+        try {
+            $responseData = $this->postService->show($postId);
+
+            if ($responseData) {
+                return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post retrieved successfully', new PostsResource($responseData));
+            }
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Post not found');
+        } catch (\Exception $e) {
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while retrieving the post');
         }
-
-        $postResource = new PostsResource($post);
-
-        return ApiResponse::sendResponse(200, 'Post retrieved successfully', $postResource);
     }
 
     public function showUserPosts(): JsonResponse
     {
-        $user = Auth::user();
-        $posts = $user->posts;
-        $postResource = PostsResource::collection($posts);
+        try {
+            $responseData = $this->postService->showUserPosts(Auth::id());
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User posts retrieved successfully', PostsResource::collection($responseData));
 
-        return ApiResponse::sendResponse(200, 'User posts retrieved successfully', $postResource);
+        } catch (\Exception $e){
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while retrieving the user post',$e->getMessage());
+        }
     }
 
-    public function update(UpdatePostRequest $request, $id): JsonResponse
+    public function update(UpdatePostRequest $request, $postId): JsonResponse
     {
-        $post = Post::findOrFail($id);
+        try {
+            $requestData = PostDto::fromUpdatePostRequest($request);
+            $responseData = $this->postService->update($requestData,$postId);
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post updated successfully', new UpdatePostResource($responseData) );
 
-        if ($request->hasFile('pet_photo')) {
-            // Check if a valid image is provided
-            $extension = $request->file('pet_photo')->getClientOriginalExtension();
-            $randomName = Str::random(10).'abed.'.$extension;
 
-            $request->file('pet_photo')->move(public_path('pet_photos'), $randomName);
-            $photoUrl = url('pet_photos/'.$randomName);
+        }catch (\Exception $e){
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while update the post', $responseData);
 
-            // Store the full URL in the "pet_photo" attribute in the database
-            $fullPhotoUrl = url('/').'/public/'.$photoUrl;
-            $post->pet_photo = $fullPhotoUrl;
-            $post->save();
-        } else {
-            return ApiResponse::sendResponse(400, 'Invalid pet photo provided.');
         }
 
-        // Update other attributes of the Post model if needed
-        $post->update($request->validated());
-
-        // Include the full URL in the response
-        $responseData = [
-            'photo_url' => $fullPhotoUrl,
-            'post_data' => $post->toArray(),
-        ];
-
-        return ApiResponse::sendResponse(200, 'Post updated successfully', $responseData);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy($postId): JsonResponse
     {
-        $post = Post::findOrFail($id);
+        try {
 
-        if ($post->pet_photo) {
-            $filePath = parse_url($post->pet_photo, PHP_URL_PATH);
-            $fileFullPath = public_path($filePath);
-            if (file_exists($fileFullPath)) {
-                unlink($fileFullPath);
-            }
+            $this->postService->destroy($postId);
+
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post deleted successfully');
+
+
+        }catch (\Exception $e){
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while delete the post');
+
         }
 
-        $post->delete();
-
-        return ApiResponse::sendResponse(200, 'Post deleted successfully');
     }
 }

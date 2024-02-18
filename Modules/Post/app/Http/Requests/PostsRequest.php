@@ -16,7 +16,7 @@ class PostsRequest extends FormRequest
     {
         return [
             'category_id' => ['required', 'exists:categories,id'],
-            'pet_photo' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'pet_photo.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'pet_type' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
             'pet_name' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],
             'pet_gender' => ['required', 'string', 'regex:/^[^\d]+$/', 'regex:/^[^<>\/\#\$%&\*\(\)_!@#]+$/'],

@@ -19,7 +19,7 @@ class PostFactory extends Factory
         return [
             'user_id' => \Modules\User\app\Models\User::factory(),
             'category_id' => \Modules\Category\app\Models\Category::factory(),
-            'pet_photo' => $this->faker->imageUrl(),
+            'pet_photo' => json_encode(['url' => $this->faker->imageUrl()]),
             'pet_type' => $this->faker->word,
             'pet_name' => $this->faker->word,
             'pet_gender' => $this->faker->colorName,

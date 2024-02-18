@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('category_id')->references('id')->on('categories')->cascadeOnDelete();
-            $table->string('pet_photo');
+            $table->json('pet_photo');
             $table->string('pet_type');
             $table->string('pet_name');
             $table->string('pet_gender');
