@@ -38,16 +38,16 @@ class MediaService
 
         return false;
     }
+
+
     public static function storeMultiplePhotos($images)
     {
         $imagePaths = [];
 
         foreach ($images as $image) {
-            $imageName = time() . 'Adopt.' . $image->getClientOriginalExtension();
-             $image->storeAs('public/posts', $imageName);
-            $relativeImagePath = 'public/posts/'.$imageName;
-            $imagePath = Storage::url($relativeImagePath);
-            $imagePaths[] = $imagePath;
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('posts'), $imageName); // Move the image to the public directory
+            $imagePaths[] = 'posts/' . $imageName; // Store the relative path
         }
 
         return $imagePaths;

@@ -2,6 +2,7 @@
 
 namespace Modules\Post\app\Resources;
 
+use App\Enums\HostingEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,9 @@ class UpdatePostResource extends JsonResource
             'category' => $this->category_id,
             'owner_name' => $this->user->name_,
             'owner_id' => $this->user->id,
-            'pet_photo' => $this->pet_photo,
+            'pet_photos' => collect($this->pet_photo)->map(function ($photo) {
+                return HostingEnum::LINK->value . $photo;
+            })->toArray(),
             'pet_type' => $this->pet_type,
             'pet_name' => $this->pet_name,
             'pet_gender' => $this->pet_gender,
