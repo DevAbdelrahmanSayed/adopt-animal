@@ -16,7 +16,7 @@ class MediaService
         $imageName = time().$id.'.'.$image->getClientOriginalExtension();
         $image->move(public_path('images'), $imageName); // Move the image to the public directory
 
-        $relativeImagePath = 'images/' . $imageName;
+        $relativeImagePath = 'https://devabdelrahm2n.fun/public/images/' . $imageName;
 
         return $relativeImagePath;
     }

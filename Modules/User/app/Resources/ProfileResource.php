@@ -16,7 +16,7 @@ class ProfileResource extends JsonResource
         return [
             'user_id' => $this->id,
             'name' => $this->name_,
-            'profile' =>HostingEnum::LINK->value.$this->profile,
+            'profile' =>$this->profile,
             'username' => $this->username,
             'email' => $this->email,
             'contact_number' => $this->contact_number,
