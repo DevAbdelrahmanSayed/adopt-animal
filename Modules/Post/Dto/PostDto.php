@@ -21,7 +21,7 @@ class PostDto
     ) {
     }
 
-    public static function fromPostRequest(PostsRequest $request ,?int $user_id): self
+    public static function fromPostRequest(PostsRequest $request, ?int $user_id): self
     {
         $petPhotos = [];
 
@@ -29,7 +29,6 @@ class PostDto
         if ($request->hasFile('pet_photo')) {
             $petPhotos = MediaService::storeMultiplePhotos($request->file('pet_photo'));
         }
-
 
         return new self(
             category_id: $request->validated('category_id'),
@@ -43,6 +42,7 @@ class PostDto
             user_id: $user_id,
         );
     }
+
     public static function fromUpdatePostRequest(UpdatePostRequest $request): self
     {
         $petPhotos = [];
@@ -51,7 +51,6 @@ class PostDto
         if ($request->hasFile('pet_photo')) {
             $petPhotos = MediaService::storeMultiplePhotos($request->file('pet_photo'));
         }
-
 
         return new self(
             category_id: $request->validated('category_id'),
@@ -64,6 +63,7 @@ class PostDto
             pet_desc: $request->validated('pet_desc'),
         );
     }
+
     public function toArray(): array
     {
         return [
@@ -75,9 +75,10 @@ class PostDto
             'pet_gender' => $this->pet_gender,
             'pet_age' => $this->pet_age,
             'pet_desc' => $this->pet_desc,
-            'user_id'  => $this->user_id
+            'user_id' => $this->user_id,
         ];
     }
+
     public function toUpdateArray(): array
     {
         return [

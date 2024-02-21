@@ -26,6 +26,7 @@ class Post extends Model
         'pet_age',
         'pet_breed',
     ];
+
     protected $casts = [
         'pet_photo' => 'json',
     ];
@@ -39,6 +40,7 @@ class Post extends Model
     {
         return json_decode($value, true);
     }
+
     protected $searchable = [
         'pet_breed',
         'pet_type',

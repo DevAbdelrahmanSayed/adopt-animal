@@ -4,11 +4,9 @@ namespace Modules\Post\Services;
 
 use Modules\Post\app\Models\Post;
 use Modules\Post\Dto\PostDto;
-use Modules\User\app\Models\User;
 
 class PostService
 {
-
     public function getAllPosts()
     {
         return Post::with('user')->latest()->paginate(40);
@@ -24,18 +22,18 @@ class PostService
     public function show($postId)
     {
         $post = Post::findOrFail($postId);
-        if (!is_null($post)) {
+        if (! is_null($post)) {
             return $post;
 
         }
+
         return false;
     }
 
     public function showUserPosts($user)
     {
-       return Post::where('user_id', $user)->with('user')->latest()->get();
+        return Post::where('user_id', $user)->with('user')->latest()->get();
     }
-
 
     public function update(PostDto $postDto, $postId)
     {
@@ -43,6 +41,7 @@ class PostService
         // Filter out null values from the DTO array
         $updatedData = array_filter($postDto->toUpdateArray());
         $post->update($updatedData);
+
         return $post;
     }
 
@@ -51,8 +50,4 @@ class PostService
         $post = Post::findOrFail($postId);
         $post->delete();
     }
-
-
-
-
 }

@@ -5,9 +5,7 @@ namespace Modules\User\app\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Modules\User\app\Http\Requests\OtpRequest;
 use Modules\User\Dto\OtpDto;
 use Modules\User\Services\OtpService;
@@ -47,5 +45,4 @@ class OtpController extends Controller
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, $exception->getMessage());
         }
     }
-
 }

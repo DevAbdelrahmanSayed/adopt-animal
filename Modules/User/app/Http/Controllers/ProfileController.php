@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Modules\User\app\Http\Requests\ProfileRequest;
 use Modules\User\app\Http\Requests\UpdatePasswordRequest;
 use Modules\User\app\Resources\ProfileResource;
@@ -21,7 +22,12 @@ class ProfileController extends Controller
     public function index(): JsonResponse
     {
         try {
-            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User profile retrieved successfully', new ProfileResource(Auth::user()));
+            $userId = Auth::id();
+            $profile = Cache::remember("user.profile.{$userId}", now()->addHour(1), function () {
+                return new ProfileResource(Auth::user());
+            });
+
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User profile retrieved successfully', new ProfileResource($profile));
         } catch (\Throwable $e) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Error retrieving user profile.');
         }

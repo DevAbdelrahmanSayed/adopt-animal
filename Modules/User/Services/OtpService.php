@@ -17,11 +17,13 @@ class OtpService
 
     public function resendOtp(User $user)
     {
-            if ($user->otp_code) {
-                $user->update(['otp_code' => null]);
-                return Otp::generate($user);
+        if ($user->otp_code) {
+            $user->update(['otp_code' => null]);
 
-            }
+            return Otp::generate($user);
+
+        }
+
         return false;
     }
 }

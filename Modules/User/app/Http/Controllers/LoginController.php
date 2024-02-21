@@ -5,7 +5,6 @@ namespace Modules\User\app\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Modules\User\app\Http\Requests\LoginRequest;
 use Modules\User\app\Resources\LoginResource;
 use Modules\User\Dto\UserDto;

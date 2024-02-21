@@ -19,8 +19,8 @@ class PostsResource extends JsonResource
             'owner_name' => $this->user->name_,
             'owner_id' => $this->user->id,
             'pet_photos' => collect($this->pet_photo)->map(function ($photo) {
-                     return HostingEnum::LINK->value . $photo;
-                 })->toArray(),
+                return HostingEnum::LINK->value.$photo;
+            })->toArray(),
             'pet_favorite' => $this->isFavoritedByUser(),
             'pet_type' => $this->pet_type,
             'pet_name' => $this->pet_name,

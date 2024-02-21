@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class MediaService
 {
@@ -16,7 +15,7 @@ class MediaService
         $imageName = time().$id.'.'.$image->getClientOriginalExtension();
         $image->move(public_path('images'), $imageName); // Move the image to the public directory
 
-        $relativeImagePath = 'https://devabdelrahm2n.fun/public/images/' . $imageName;
+        $relativeImagePath = 'https://devabdelrahm2n.fun/public/images/'.$imageName;
 
         return $relativeImagePath;
     }
@@ -37,18 +36,16 @@ class MediaService
         return false;
     }
 
-
     public static function storeMultiplePhotos($images)
     {
         $imagePaths = [];
 
         foreach ($images as $image) {
-            $imageName = time() . 'Adopt' . $image->getClientOriginalExtension();
+            $imageName = time().'Adopt'.$image->getClientOriginalExtension();
             $image->move(public_path('posts'), $imageName); // Move the image to the public directory
-            $imagePaths[] = 'posts/' . $imageName; // Store the relative path
+            $imagePaths[] = 'posts/'.$imageName; // Store the relative path
         }
 
         return $imagePaths;
     }
-
 }

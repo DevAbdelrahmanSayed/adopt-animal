@@ -28,13 +28,14 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $hidden = [
-        'password', 'remember_token', 'new_password'
+        'password', 'remember_token', 'new_password',
     ];
 
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
     }
+
     use HasFactory, Notifiable;
 
     public function setPasswordAttribute($value)
@@ -56,7 +57,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Post::class, 'favorites', 'user_id', 'post_id');
     }
-
 
     public function getJWTCustomClaims()
     {

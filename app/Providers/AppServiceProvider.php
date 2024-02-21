@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\TelescopeServiceProvider;
+use Modules\Post\app\Models\Post;
+use Modules\Post\Observers\PostObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +33,8 @@ class AppServiceProvider extends ServiceProvider
             return $this->format('Y-m-d H:i:s');
         });
         Schema::defaultStringLength(191);
+        Post::observe(PostObserver::class);
+        Post::observe(PostObserver::class);
+
     }
 }

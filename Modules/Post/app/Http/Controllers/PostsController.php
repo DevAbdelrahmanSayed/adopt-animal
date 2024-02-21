@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Modules\Post\app\Http\Requests\PostsRequest;
 use Modules\Post\app\Http\Requests\UpdatePostRequest;
 use Modules\Post\app\Resources\PostsResource;
@@ -18,13 +19,16 @@ class PostsController extends Controller
     public function __construct(protected PostService $postService)
     {
     }
+
     public function index(): JsonResponse
     {
 
-            $posts = $this->postService->getAllPosts();
-            $postsResource = PostsResource::collection($posts);
+        $posts = Cache::remember('posts.index', now()->addHour(1), function () {
+            return $this->postService->getAllPosts();
+        });
+        $postsResource = PostsResource::collection($posts);
 
-            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Posts retrieved successfully', $postsResource);
+        return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Posts retrieved successfully', $postsResource);
 
     }
 
@@ -43,11 +47,13 @@ class PostsController extends Controller
     public function show($postId): JsonResponse
     {
         try {
-            $responseData = $this->postService->show($postId);
-
-            if ($responseData) {
-                return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post retrieved successfully', new PostsResource($responseData));
+            $post = Cache::remember("post.{$postId}", now()->addHour(1), function () use ($postId) {
+                return $this->postService->show($postId);
+            });
+            if ($post) {
+                return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post retrieved successfully', new PostsResource($post));
             }
+
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'Post not found');
         } catch (\Exception $e) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while retrieving the post');
@@ -58,10 +64,11 @@ class PostsController extends Controller
     {
         try {
             $responseData = $this->postService->showUserPosts(Auth::id());
+
             return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'User posts retrieved successfully', PostsResource::collection($responseData));
 
-        } catch (\Exception $e){
-            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while retrieving the user post',$e->getMessage());
+        } catch (\Exception $e) {
+            return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while retrieving the user post', $e->getMessage());
         }
     }
 
@@ -69,11 +76,11 @@ class PostsController extends Controller
     {
         try {
             $requestData = PostDto::fromUpdatePostRequest($request);
-            $responseData = $this->postService->update($requestData,$postId);
-            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post updated successfully', new UpdatePostResource($responseData) );
+            $responseData = $this->postService->update($requestData, $postId);
 
+            return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post updated successfully', new UpdatePostResource($responseData));
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while update the post', $responseData);
 
         }
@@ -88,8 +95,7 @@ class PostsController extends Controller
 
             return ApiResponse::sendResponse(JsonResponse::HTTP_OK, 'Post deleted successfully');
 
-
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, 'An error occurred while delete the post');
 
         }

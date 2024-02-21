@@ -3,7 +3,6 @@
 namespace Modules\User\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Modules\User\app\Models\User;
 use Modules\User\Dto\UserDto;
 
 class LoginService

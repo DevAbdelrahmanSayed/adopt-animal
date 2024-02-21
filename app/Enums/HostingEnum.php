@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum HostingEnum:string
+enum HostingEnum: string
 {
     case LINK = 'https://devabdelrahm2n.fun/public/';
 
