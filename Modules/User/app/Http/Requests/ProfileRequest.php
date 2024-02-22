@@ -17,10 +17,10 @@ class ProfileRequest extends FormRequest
     {
         return [
             'name_' => ['string', 'min:3', 'max:25'],
-            'username' => ['string', 'min:3', 'max:30', 'unique:users'],
-            'email' => ['email', 'unique:users,email'],
+            'username' => ['string', 'min:3', 'max:30',],
+            'email' => ['email',],
             'profile' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'contact_number' => 'string|unique:users,contact_number',
+            'contact_number' => 'string',
             'country' => 'string|max:255',
             'address' => 'string|max:255',
         ];
