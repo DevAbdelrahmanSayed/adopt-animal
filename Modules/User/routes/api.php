@@ -24,7 +24,7 @@ Route::middleware('guest')->group(function () {
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index']);
-    Route::put('/profile/update', [ProfileController::class, 'update']);
+    Route::put('update/profile', [ProfileController::class, 'update']);
     Route::put('/profile/update/password', [ProfileController::class, 'changePassword']);
 });
 Route::prefix('otp')->group(function () {
