@@ -26,8 +26,8 @@ class UserDto
     public static function fromProfileRequest(ProfileRequest $request): self
     {
         return new self(
-            name: $request->validated('name_'),
-            username: $request->validated('username'),
+            name: strtolower($request->validated('name_')),
+            username: strtolower($request->validated('username')),
             email: $request->validated('email'),
             profile: $request->file('profile'),
             contactNumber: $request->validated('contact_number'),
@@ -54,8 +54,8 @@ class UserDto
     public static function fromRegisterRequest(RegisterRequest $request): self
     {
         return new self(
-            name: $request->validated('name_'),
-            username: $request->validated('username'),
+            name: strtolower($request->validated('name_')),
+            username: strtolower($request->validated('username')),
             email: $request->validated('email'),
             contactNumber: $request->validated('contact_number'),
             country: $request->validated('country'),
