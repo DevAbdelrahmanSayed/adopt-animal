@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Laravel\Telescope\TelescopeServiceProvider;
 use Modules\Post\app\Models\Post;
 use Modules\Post\Observers\PostObserver;
+use Modules\User\Observers\UserObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Schema::defaultStringLength(191);
         Post::observe(PostObserver::class);
-        Post::observe(PostObserver::class);
+        Post::observe(UserObserver::class);
 
     }
 }
