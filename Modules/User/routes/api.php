@@ -22,7 +22,7 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [RegisterController::class, 'store']);
     Route::post('login', [LoginController::class, 'store']);
 });
-Route::middleware('auth:user')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index']);
     Route::put('/profile/update', [ProfileController::class, 'update']);
     Route::put('/profile/update/password', [ProfileController::class, 'changePassword']);

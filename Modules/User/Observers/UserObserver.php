@@ -7,6 +7,10 @@ use Modules\User\app\Models\User;
 
 class UserObserver
 {
+    public function created(User $post)
+    {
+        Cache::forget('user.profile');
+    }
     public function updated(User $user)
     {
         Cache::forget("user.profile.{$user->id}");
