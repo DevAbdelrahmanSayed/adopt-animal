@@ -20,6 +20,7 @@ class UserDto
         public ?string $password = null,
         public ?string $newPassword = null,
         public ?string $usernameEmail = null,
+        public ?string $Email = null,
     ) {
     }
 
@@ -39,15 +40,15 @@ class UserDto
     public static function fromUpdatePasswordRequest(UpdatePasswordRequest $request): self
     {
         return new self(
-            password: $request->validated('password'),
-            newPassword: $request->validated('passwordNew'),
+            password: $request->validated('old_password'),
+            newPassword: $request->validated('new_password'),
         );
     }
 
     public static function resetLinkRequest($request): self
     {
         return new self(
-            usernameEmail: $request->validated('username_email'),
+            Email: $request->validated('email'),
         );
     }
 
@@ -73,10 +74,10 @@ class UserDto
         );
     }
 
-    public static function resetPasswordRequest($request): self
+    public static function resetPasswordRequest($password): self
     {
         return new self(
-            password: $request->validated('password'),
+            password: $password,
         );
     }
 

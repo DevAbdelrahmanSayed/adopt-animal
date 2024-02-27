@@ -51,7 +51,8 @@ class ResetPasswordController extends Controller
             $currentUser = Auth::user();
 
             if ($currentUser) {
-                $requestData = UserDto::ResetPasswordRequest($validator);
+                $validatedData = $validator->validated();
+                $requestData = UserDto::resetPasswordRequest($validatedData['password']);
                 $this->resetPasswordService->resetPassword($currentUser, $requestData);
 
                 return ApiResponse::sendResponse(JsonResponse::HTTP_CREATED, 'Password updated Successfully', []);
@@ -62,4 +63,5 @@ class ResetPasswordController extends Controller
             return ApiResponse::sendResponse(JsonResponse::HTTP_UNPROCESSABLE_ENTITY, $exception->getMessage());
         }
     }
+
 }

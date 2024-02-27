@@ -11,9 +11,7 @@ class ResetPasswordService
 {
     public function resetLinkEmail(UserDto $userDto)
     {
-        $loginIdentifier = $userDto->usernameEmail;
-        $type = filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        $currentUser = User::where($type, $loginIdentifier)->first();
+        $currentUser = User::where('email', $userDto->Email)->first();
         if ($currentUser) {
             Otp::generate($currentUser);
 

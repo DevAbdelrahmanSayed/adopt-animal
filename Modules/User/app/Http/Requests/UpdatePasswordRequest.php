@@ -17,8 +17,8 @@ class UpdatePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required', 'regex:/^[^<>]*$/',
-            'passwordNew' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
+            'old_password' => 'required', 'regex:/^[^<>]*$/',
+            'new_password' => ['required', 'regex:/^[^<>]*$/', Password::min(8)->mixedCase()->numbers()->symbols()->uncompromised(), Password::defaults()],
         ];
     }
 

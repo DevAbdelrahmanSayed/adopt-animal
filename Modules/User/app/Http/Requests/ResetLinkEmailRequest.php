@@ -12,7 +12,7 @@ class ResetLinkEmailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username_email' => 'required', 'email:rfc,dns,strict',
+            'email' => 'required', 'email:rfc,dns,strict',
         ];
     }
 
